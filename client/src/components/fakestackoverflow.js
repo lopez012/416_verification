@@ -1,5 +1,11 @@
+import React from 'react';
+import Homepage from './Homepage.js';
+
 export default function fakeStackOverflow() {
   return (
-    <h1> Replace with relevant content </h1>
+<section className="fakestackoverflow">
+      <Homepage />
+
+    </section>
   );
 }
