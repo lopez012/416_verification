@@ -345,6 +345,60 @@ body{
     cursor: pointer;
     
   }
+  .Welcome{
+    color: blue;
+    text-align: center;
+    font-size: 35px;
+  }
+  .center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .register_button{
+    margin: 10px;
+    font-size: 20px;
+    color: white;
+    background-color: dodgerblue;
+    border-color: dodgerblue;
+    border-radius: 12px;
+    cursor: pointer;
+    
+  }
+  .login_button{
+    margin: 10px;
+    font-size: 20px;
+    color: dodgerblue;
+    background-color: white;
+    border-color: dodgerblue;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  .guest_button{
+    margin: 10px;
+    font-size: 20px;
+    border-radius: 12px;
+    cursor: pointer;
+
+  }
+  .register_form{
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+  .login_form{
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+  .submit_button{
+    margin: 10px;
+    color: white;
+    background-color: dodgerblue;
+    border-color: dodgerblue;
+    border-radius: 12px;
+    cursor: pointer;
+
+  }
    
   
   
