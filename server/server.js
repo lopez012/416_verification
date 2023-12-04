@@ -4,15 +4,20 @@
 // This is where you should start writing server-side code for this application.
 
 const express = require('express');
+const session = require('express-session');
+const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
+const bcrypt = require('bcrypt');
 const cors = require('cors');
 
-const mongoose = require('mongoose');
 
 const app = express();
 const port = 8000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
 
 var mongoDB = 'mongodb://127.0.0.1:27017/fake_so';
 mongoose.connect(mongoDB,{useNewUrlParser: true, useUnifiedTopology:true});
@@ -26,16 +31,47 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 const answerRouter = require('./routes/answer_route');
 const tagRouter = require('./routes/tag_route');
 const questionRouter = require('./routes/question_route.js');
+const userRouter = require('./routes/users_route.js');
+
 app.use('/answers', answerRouter);
 app.use('/tags', tagRouter);
 app.use('/questions',questionRouter);
+app.use('/users',userRouter);
 
-
-
+app.use(session({
+    secret: "very secret string",
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1:27017/fake_so' }),
+    cookie: {
+        httpOnly: true, 
+        secure: true, 
+    }
+}));
 
 app.listen(port, () => {
     console.log(`server running on port: ${port}`)
   });
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 process.on('SIGINT',()=>{
     console.log("\nServer closed. Database instance disconnected");
