@@ -9,7 +9,13 @@ var UserSchema = new Schema({
         default: function() {return this.email;} 
     },
     hashed_password:{type: String, required: true},
-    admin_privileges:{type:Boolean , default:false}
+    role: {
+        type: String, 
+        default: "regular",
+        enum: ["guest", "regular", "admin"]
+    },
+    reputation:{type: Number, default: 0},
+    member_since:{type: Date, default: Date.now}
 });
 
 UserSchema.virtual('url').get(function() {
