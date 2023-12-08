@@ -85,13 +85,13 @@ class Homepage extends Component {
     return question_list.sort((q1,q2)=>q2.askDate-q1.askDate);
   }
   getlatestanswerdate(question){
-    if(question.answers.length==0){
+    if(question.answers.length===0){
       return new Date(0);
     }else{
       let latestdate = new Date(0);
       
       for(let i =0; i<question.answers.length;i++){
-        let answer = this.model.data.answers.find(answer=>answer.aid==question.answers[i]);
+        let answer = this.model.data.answers.find(answer=>answer.aid===question.answers[i]);
         if(answer.ansDate>latestdate){
           latestdate = answer.ansDate;
         }  
@@ -320,9 +320,14 @@ class Homepage extends Component {
     }
   };
   render() {
+    const { user } = this.props;
+    console.log("Logout prop in Homepage:", this.props.logout);
     return (
+      
+      
       <div className="homepage">
-        <Header onSearch={this.handleSearch} />
+        <Header onSearch={this.handleSearch} logout ={this.props.logout} user= {this.props.user} />
+        {user && (<h1>Welcome {user.username} !</h1>)}
         <MenuBar className = "menubar" showhomePage = {this.handlehomepage} showtagPage = {this.handletagpage} onQuestions = {this.state.displayquestions} ontagpage = {this.state.tagpage}/>
 
         <div className= "right_content">

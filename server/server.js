@@ -11,12 +11,22 @@ const bcrypt = require('bcrypt');
 const cors = require('cors');
 
 
+
+
 const app = express();
 const port = 8000;
 
-app.use(cors());
+//app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+const corsOptions = {
+    origin: 'http://localhost:3000', 
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
+
+
 
 
 var mongoDB = 'mongodb://127.0.0.1:27017/fake_so';
@@ -33,11 +43,6 @@ const tagRouter = require('./routes/tag_route');
 const questionRouter = require('./routes/question_route.js');
 const userRouter = require('./routes/users_route.js');
 
-app.use('/answers', answerRouter);
-app.use('/tags', tagRouter);
-app.use('/questions',questionRouter);
-app.use('/users',userRouter);
-
 app.use(session({
     secret: "very secret string",
     resave: false,
@@ -45,9 +50,20 @@ app.use(session({
     store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1:27017/fake_so' }),
     cookie: {
         httpOnly: true, 
-        secure: true, 
+        secure:false,
+        maxAge: 1000 * 60 * 60,
+        resave: false,
+        saveUninitialized: false
     }
 }));
+
+app.use('/answers', answerRouter);
+app.use('/tags', tagRouter);
+app.use('/questions',questionRouter);
+app.use('/users',userRouter);
+
+
+
 
 app.listen(port, () => {
     console.log(`server running on port: ${port}`)

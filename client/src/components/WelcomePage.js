@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
+import axios from 'axios';
 
 import '../stylesheets/App.css'
 import LoginForm from '../components/LoginForm'
 
 import Homepage from './Homepage'
 import RegisterForm from '../components/RegisterForm'
+
+axios.defaults.withCredentials = true;
+
 
 class WelcomePage extends Component {
     constructor(props) {
@@ -13,36 +17,90 @@ class WelcomePage extends Component {
         this.state = {
           toggle_register_form:false,
           toggle_login_form:false,
-          show_homepage: false
+          show_homepage: false,
+          Logged_In_User: null
           
         }
         this.toggle_register_form = this.toggle_register_form.bind(this);
         this.toggle_login_form = this.toggle_login_form.bind(this);
         this.showhomepage = this.showhomepage.bind(this);
+        this.set_logged_in_user = this.set_logged_in_user.bind(this);
+        this.logout = this.logout.bind(this);
+        
+    }
+    async componentDidMount() {
+      
+      axios.get('http://localhost:8000/users/verify-session')
+        .then(response => {
+            if (response.data.sessionValid) {
+                this.setState({ Logged_In_User: response.data.user });
+            } else {
+                this.setState({ Logged_In_User: null });
+            }
+        })
+        .catch(error => {
+            this.setState({ Logged_In_User: null });
+        });
     }
     toggle_register_form(event){
         this.setState((prevstate) =>({toggle_register_form: !prevstate.toggle_register_form}))
+        
     }
     toggle_login_form(event){
         this.setState((prevstate) =>({toggle_login_form: !prevstate.toggle_login_form}))
     }
+    set_logged_in_user(User){
+      this.setState({Logged_In_User:User})
+    
+    }
+    logout() {
+      
+      console.log("Logout clicked");
+      this.setState({
+          toggle_register_form:false,
+          toggle_login_form:false,
+          show_homepage: false });
+
+      axios.get('http://localhost:8000/users/logout')
+        .then(response => {
+            this.setState({ Logged_In_User: null});
+        })
+        .catch(error => {
+            this.setState({ Logged_In_User: null });
+        });
+        
+        console.log('Test logout function');
+
+
+
+    }
 
 
     showhomepage(event) {
-        this.setState({ show_homepage: true });
+        console.log("showhomepage method called");
+
+        this.setState({ 
+          toggle_register_form:false,
+          toggle_login_form:false,
+          show_homepage: true });
     }
 
 
 
   render() {
+    if(this.state.Logged_In_User){ // Rendered for REGISTERED Users.
+      return <Homepage user={this.state.Logged_In_User} logout = {this.logout} />;
+    }
     if(this.state.toggle_login_form){
-        return <LoginForm toggleForm = {this.toggle_login_form} /> 
+        return <LoginForm toggleHome = {this.showhomepage} set_logged_in_user={this.set_logged_in_user} /> 
     }
     if(this.state.toggle_register_form){
         return <RegisterForm toggleForm = {this.toggle_login_form} /> 
     }
-    if (this.state.show_homepage) {
-        return <Homepage />;
+    
+    if (this.state.show_homepage) { //rendered when guest enters 
+        
+        return <Homepage  user={this.state.Logged_In_User} logout = {this.logout}/>;
     }
     return (
         

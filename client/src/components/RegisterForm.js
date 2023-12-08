@@ -21,12 +21,19 @@ export default class RegisterForm extends Component {
     }
     handleInputChange(event){
       this.setState({[event.target.name]:event.target.value});
+      this.setState({
+        username_error: '',
+        email_error:'',
+        password_error: '',
+        password_verification_error: ''
+      })
     }
     handleSubmitForm(event){
       event.preventDefault();
       let username_error = '';
       let email_error = '';
       let password_error = '';
+      let password_verification_error ='';
 
       let validinput = true;
       if(!this.state.username){
@@ -44,12 +51,39 @@ export default class RegisterForm extends Component {
         validinput = false;
 
       }
+      if(this.state.password!==this.state.password_verification){
+        password_verification_error = 'Passwords do not match!'
+        validinput = false;
+      }
       if(validinput){
-        /*
-          TODO:
-              */
+
+        const user_data = {
+            email: this.state.email,
+            username: this.state.username,
+            password: this.state.password ,
+            role: "regular"
+        };
+
+        axios.post('http://localhost:8000/users/add', user_data)
+            .then(res=> {
+                this.props.toggleForm();
+                this.setState({
+                    email: '',
+                    username: '',
+                    password: '', 
+                    password_verification:'', 
+                    username_error:'',
+                    password_error:'',
+                    password_verification: '',
+                    email_error:'',  
+                  });
+            })
+            .catch(err=>{
+                console.log('error adding user: ',err);
+
+            })
       }else{
-        this.setState({username_error,email_error,password_error});
+        this.setState({username_error,email_error,password_error,password_verification_error});
       }
     }
   
@@ -90,7 +124,7 @@ export default class RegisterForm extends Component {
           name="password_verification" 
           value = {this.state.password_verification} 
           onChange={this.handleInputChange} /><br/>
-          <div id = "password_error">{this.state.password_error?this.state.password_error:''}</div>
+          <div id = "password_verification_error">{this.state.password_verification_error?this.state.password_verification_error:''}</div>
           <br/>
 
           <button type="submit" className='submit_button'>Sign Up</button>
