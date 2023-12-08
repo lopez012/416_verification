@@ -19,7 +19,8 @@ class Homepage extends Component {
       displayQuestionForm: false,
       displayQuestionHeader: true,
       displaySearchHeader:false,
-      questions: [], 
+      questions: [],
+      question_count:0, 
       viewedQuestion: null,
       showAnswer : false,
       searchResults: [],
@@ -29,7 +30,10 @@ class Homepage extends Component {
       tagclicked:false,
       sortedbynewest:false,
       sortedbyactive:false,
-      sortedbyunanswered:false
+      sortedbyunanswered:false,
+      page_controls:true,
+      current_page:0,
+      question_per_page:5
     };
     this.model = new Model();
     this.handlehomepage = this.handlehomepage.bind(this);
@@ -42,6 +46,9 @@ class Homepage extends Component {
       const response = await axios.get('http://localhost:8000/questions/all'); 
       const questions = response.data;
       this.setState({ questions });
+      let count = questions.length;
+      this.setState({question_count: count})
+      console.log(count);
     } catch (error) {
       console.error('Error fetching questions:', error);
     }
@@ -57,6 +64,7 @@ class Homepage extends Component {
       displayquestions:true,
       tagclicked:false,
       initSearch : false,
+      page_controls:true
     })
 
   }
@@ -69,7 +77,8 @@ class Homepage extends Component {
       viewedQuestion:null,
       showAnswer:false,
       displayquestions:false,
-      initSearch: false
+      initSearch: false,
+      page_controls:false
     })
   }
   handletagclick(questionsoftag){
@@ -108,11 +117,40 @@ class Homepage extends Component {
 
     return sortedList;
   }
+  total_pages = () =>{
+    return Math.ceil(this.state.questions.length/this.state.question_per_page);
+  };
+
+  next_page = ()=>{
+    this.setState(prevState =>({
+      current_page: (prevState.current_page +1)% this.total_pages()
+
+    }));
+  };
+  prev_page =()=>{
+    this.setState(prevState=>({
+      current_page: prevState.current_page===0?0: prevState.current_page-1
+
+
+    }));
+
+  };
+
+
+
+
   renderQuestions() {
     let questions = this.state.questions;
     
     if(this.state.tagclicked){
-      questions = this.state.tagQuestions;
+      return this.state.tagQuestions.map((question) => (
+        <Question
+          key={question._id}
+          question={question}
+          onViewQuestion={this.handleViewQuestion}
+          tagName={question.tags} 
+        />
+    ));
     }else if(this.state.sortedbyactive){
       questions = this.sortbyactive(this.state.questions);
     }else if(this.state.sortedbyunanswered){
@@ -120,15 +158,27 @@ class Homepage extends Component {
     }else{
         questions = this.sortbynewest(this.state.questions);
     }
+    const start_ind = this.state.current_page * this.state.question_per_page;
+    const questions_on_page = this.state.questions.slice(start_ind, start_ind+this.state.question_per_page)
+
+    const questions_on_page_comp = questions_on_page.map((question) => (
+      <Question
+        key={question._id}
+        question={question}
+        onViewQuestion={this.handleViewQuestion}
+        tagName={question.tags} 
+      />
+  ));
     
-      return questions.map((question) => (
-        <Question
-          key={question._id}
-          question={question}
-          onViewQuestion={this.handleViewQuestion}
-          tagName={question.tags} 
-        />
-      ));
+  return (
+    <div>
+      <div className="question-list">
+        {questions_on_page_comp}
+      </div>
+
+    </div>
+  );
+
   }
 
   
@@ -138,7 +188,8 @@ class Homepage extends Component {
       displayQuestionHeader: false,
       displaySearchHeader : false,
       initSearch : false,
-      tagpage:false
+      tagpage:false,
+      page_controls:false
     }));
   };
 
@@ -154,6 +205,7 @@ class Homepage extends Component {
           displayQuestionHeader: false,
           initSearch: false,
           displaySearchHeader: false,
+          page_controls:false
         });
       } catch (error) {
         console.error('Error updating view count:', error);
@@ -168,6 +220,7 @@ class Homepage extends Component {
       viewedQuestion: null,
       showAnswer: false,
       initSearch : false,
+      page_controls:true
     });
   }
   handlesortedbynewest = () => {
@@ -306,6 +359,8 @@ class Homepage extends Component {
       console.log('Question added successfully:', response.data);
       const updatedResponse = await axios.get('http://localhost:8000/questions/all');
       const updatedQuestions = updatedResponse.data;
+      let updated_q_count = updatedQuestions.length;
+
       this.setState({
         displayQuestionForm: false,
         displayQuestionHeader: true,
@@ -314,6 +369,8 @@ class Homepage extends Component {
         displaySearchHeader: false,
         displayquestions: true,
         questions: updatedQuestions,
+        page_controls:true,
+        question_count:updated_q_count
       });
     } catch (error) {
       console.error('Error adding question:', error.response.data);
@@ -324,22 +381,26 @@ class Homepage extends Component {
     console.log("Logout prop in Homepage:", this.props.logout);
     return (
       
-      
+      <div>
       <div className="homepage">
         <Header onSearch={this.handleSearch} logout ={this.props.logout} user= {this.props.user} />
         {user && (<h1>Welcome {user.username} !</h1>)}
-        <MenuBar className = "menubar" showhomePage = {this.handlehomepage} showtagPage = {this.handletagpage} onQuestions = {this.state.displayquestions} ontagpage = {this.state.tagpage}/>
-
-        <div className= "right_content">
-          {this.state.displayQuestionHeader && (
+        {this.state.displayQuestionHeader && (
             <QuestionsHeader
               totalQuestions={this.state.questions.length}
               onAskQuestion={this.toggleQuestionForm}
               sortbynewest = {this.handlesortedbynewest}
               sortbyactive ={this.handlesortedbyactive}
               sortbyunanswered ={this.handlesortedbyunanswered} 
+              user = {this.props.user}
             />
           )}
+        <MenuBar className = "menubar" showhomePage = {this.handlehomepage} showtagPage = {this.handletagpage} onQuestions = {this.state.displayquestions} ontagpage = {this.state.tagpage}/>
+
+
+        
+        <div className= "right_content">
+          
           {this.state.displaySearchHeader && (
             <SearchHeader
               totalQuestions={this.state.searchResults.length}
@@ -365,6 +426,7 @@ class Homepage extends Component {
           this.renderQuestions():null
           
           
+          
           }
           {this.state.tagpage && (
             <>
@@ -372,8 +434,20 @@ class Homepage extends Component {
             <TagPage onTagclick= {this.handletagclick}  />
             </>
           )}
+        {this.state.page_controls &&(
+        <div className="Page_controls">
+        <button onClick={this.prev_page} disabled={this.state.current_page === 0}>Prev</button>
+        <button onClick={this.next_page}>Next</button>
         </div>
+        )}
+
+        </div>
+
+        
+        
     </div>
+    
+  </div>
   );
 }
 }
