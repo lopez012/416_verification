@@ -37,7 +37,12 @@ class Question extends Component {
               >
                 {question.title}
               </a>
-            </p>  
+            </p>
+            <p className='summary'>{question.summary}</p>
+
+
+
+
             <div id="q_tag_container">
             {this.props.question.tags.map((tags) => (
          <span key={tags._id} className="q_tag">

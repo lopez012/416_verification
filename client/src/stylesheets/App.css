@@ -417,6 +417,10 @@ body{
     overflow-y: auto;
     max-height: 500px;
   }
+  .summary{
+    margin-left: 20px;
+    color: grey;
+  }
    
   
   

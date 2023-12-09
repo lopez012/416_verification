@@ -5,14 +5,14 @@ function QuestionForm({ onQuestionSubmit }) {
     questionTitle: '',
     questionText: '',
     tags: '',
-    username: '',
+    summary: '',
   });
 
   const [errors, setErrors] = useState({
     questionTitle: '',
     questionText: '',
     tags: '',
-    username: '',
+    summary: '',
   });
 
   const handleChange = (e) => {
@@ -58,10 +58,15 @@ function QuestionForm({ onQuestionSubmit }) {
       newErrors.tags = 'Tags are required';
       hasErrors = true;
     }
-    if (formData.username.trim() === '') {
-      newErrors.username = 'Username is required';
+    if (formData.summary.trim() === '') {
+      newErrors.summary = 'Summary is required';
       hasErrors = true;
     }
+    if (formData.summary.length > 140) {
+      newErrors.summary = 'Summary must be 140 characters or less';
+      hasErrors = true;
+    }
+
     const Regex = /\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g;
     const links = formData.questionText;
     const matches = links.match(Regex);
@@ -84,20 +89,22 @@ function QuestionForm({ onQuestionSubmit }) {
 
     if (hasErrors) {
       setErrors(newErrors);
+      console.log('error in q form');
     } else {
+      console.log(formData.summary);
       onQuestionSubmit(formData);
       // Clear the form and reset errors
       setFormData({
         questionTitle: '',
         questionText: '',
         tags: '',
-        username: '',
+        summary: '',
       });
       setErrors({
         questionTitle: '',
         questionText: '',
         tags: '',
-        username: '',
+        summary: '',
       });
     }
   };
@@ -118,6 +125,23 @@ function QuestionForm({ onQuestionSubmit }) {
         <span id="question_title_error" className="error-message" style={{ color: 'red' }}>
           {errors.questionTitle}
         </span>
+
+        <h2>Question summary*</h2>
+        <textarea
+          type="text"
+          id="summary"
+          name="summary"
+          value={formData.summary}
+          onChange={handleChange}
+          rows="5"
+          cols="50"
+        />
+        <br />
+        <span id="summary_error" className="error-message" style={{ color: 'red' }}>
+          {errors.summary}
+        </span>
+
+
         <h2>Question Text*</h2>
         <label htmlFor="questionText">Add details:</label>
         <br />
@@ -145,18 +169,9 @@ function QuestionForm({ onQuestionSubmit }) {
         <span id="tags_error" className="error-message" style={{ color: 'red' }}>
           {errors.tags}
         </span>
-        <h2>Username*</h2>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-        />
+        
+      
         <br />
-        <span id="username_error" className="error-message" style={{ color: 'red' }}>
-          {errors.username}
-        </span>
         <br />
         <button type="submit">Post Question</button>
         <span style={{ color: 'red' }}> *indicates mandatory fields</span>
