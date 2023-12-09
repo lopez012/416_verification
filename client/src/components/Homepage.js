@@ -420,6 +420,7 @@ class Homepage extends Component {
                 onBackToQuestions={this.handleBackToQuestions}
                 //model={this.model}
                 onAskQuestion={this.toggleQuestionForm}
+                user ={this.props.user}
               />
             )
           : this.state.displayquestions?
@@ -430,7 +431,7 @@ class Homepage extends Component {
           }
           {this.state.tagpage && (
             <>
-            <TagPageHeader onAskQuestion={this.toggleQuestionForm}/>
+            <TagPageHeader onAskQuestion={this.toggleQuestionForm} user={this.props.user}/>
             <TagPage onTagclick= {this.handletagclick}  />
             </>
           )}

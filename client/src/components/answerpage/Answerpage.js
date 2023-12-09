@@ -23,13 +23,14 @@ export default class AnswerPage extends Component {
     }
     return (
 <div>
-    <AnswerPageHeader question={this.props.question} onAskQuestion={this.props.onAskQuestion}/>
+    <AnswerPageHeader question={this.props.question} onAskQuestion={this.props.onAskQuestion} user ={this.props.user}/>
     <QuestionInfo question={this.props.question} />
     <Answers
       questionid={this.props.question._id}
       //model={this.props.model}
     />
-    <AnswerQuestionButton toggleForm={this.toggle_answer_form} />
+    {this.props.user &&
+    (<AnswerQuestionButton toggleForm={this.toggle_answer_form} />)}
   </div>
     )
   }
