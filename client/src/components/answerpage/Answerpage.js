@@ -10,7 +10,7 @@ export default class AnswerPage extends Component {
       super(props)
     
       this.state = {
-        toggle_answer_form:false
+        toggle_answer_form:false,
       }
       this.toggle_answer_form = this.toggle_answer_form.bind(this)
     }
@@ -79,6 +79,7 @@ export default class AnswerPage extends Component {
     onAskQuestion={this.props.onAskQuestion} 
     onUpVote = {this.handleUpVote}
     onDownVote = {this.handleDownvote}
+    user ={this.props.user}
     />
     <QuestionInfo question={this.props.question} />
     <Answers
