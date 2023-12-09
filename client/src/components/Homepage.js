@@ -370,7 +370,11 @@ class Homepage extends Component {
     const title = formData.questionTitle;
     const text = formData.questionText;
     const Tags = formData.tags;
-    const askedBy = formData.username
+    //TODO: username for registered users
+    //const askedBy = formData.username
+    const summary = formData.summary;
+    const askedBy = this.props.user.username;
+    console.log(askedBy);
 
     const tagArray = Tags.trim().split(/\s+/).slice(0, 5);
   
@@ -405,6 +409,7 @@ class Homepage extends Component {
         title,
         text,
         tags,
+        summary,
         askedBy
       });
       console.log('Question added successfully:', response.data);

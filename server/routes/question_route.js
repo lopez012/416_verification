@@ -52,14 +52,15 @@ router.route('/:id').get(async (req, res) => {
 
 // Add a new question
 router.route('/add').post(async (req, res) => {
-  const { title, text, tags, askedBy } = req.body;
+  const { title, text, tags, askedBy, summary } = req.body;
   
   try {
     const newQuestion = new Question({
       title,
       text,
       tags,
-      askedBy, 
+      askedBy,
+      summary 
     });
 
     await newQuestion.save();

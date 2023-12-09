@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 
 var QuestionSchema = new Schema({
     title: { type: String, required: true, maxlength: 100 },
+    summary: {type: String, required: true, maxlength: 140 } ,
     text: { type: String, required: true },
     tags: [{ type: Schema.Types.ObjectId, ref: 'Tag', required: true }],
     askedBy: { type: String, required: true, default: 'Anonymous' },
