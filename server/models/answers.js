@@ -5,7 +5,9 @@ var Schema = mongoose.Schema;
 var AnswerSchema = new Schema({
     text: {type: String, required: true},
     ans_by:{type: String, required: true},
-    ans_date_time:{type:Date , default:Date.now}
+    ans_date_time:{type:Date , default:Date.now},
+    upvotes: { type: [{ type: Schema.Types.ObjectId, ref: 'User' }], default: [] },  
+    downvotes: { type: [{ type: Schema.Types.ObjectId, ref: 'User' }], default: [] },
 });
 
 AnswerSchema.virtual('url').get(function() {
