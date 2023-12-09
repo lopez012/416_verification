@@ -4,7 +4,7 @@ import AnswerPageHeader from './AnswerPageHeader'
 import QuestionInfo from './QuestionInfo'
 import Answers from './Answers'
 import AnswerQuestionButton from './AnswerQuestionButton'
-
+import axios from 'axios'
 export default class AnswerPage extends Component {
     constructor(props) {
       super(props)
@@ -17,13 +17,45 @@ export default class AnswerPage extends Component {
     toggle_answer_form(event){
         this.setState((prevstate) =>({toggle_answer_form: !prevstate.toggle_answer_form}))
     }
+    handleUpVote = async (qid) => {
+      const { user } = this.props;
+      
+      const userId = user.id
+      console.log(userId);
+      try {
+        console.log(qid, user.id);
+        
+        const response = await axios.post(`http://localhost:8000/questions/${qid}/${userId}/upvote`)
+        console.log(response);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+  
+    handleDownvote = async (qid) => {
+      const {  user } = this.props;
+      
+      try {
+        const response = await axios.post(`http://localhost:8000/questions/${qid}/${user.id}/downvote`)
+        console.log(response);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+  
   render() {
     if(this.state.toggle_answer_form){
         return <AnswerForm toggleForm = {this.toggle_answer_form} qid={this.props.question._id} /> 
     }
     return (
 <div>
-    <AnswerPageHeader question={this.props.question} onAskQuestion={this.props.onAskQuestion} user ={this.props.user}/>
+    <AnswerPageHeader 
+    question={this.props.question} 
+    onAskQuestion={this.props.onAskQuestion} 
+    user ={this.props.user}
+    onUpVote = {this.handleUpVote}
+    onDownVote = {this.handleDownvote}
+    />
     <QuestionInfo question={this.props.question} />
     <Answers
       questionid={this.props.question._id}
