@@ -25,7 +25,7 @@ export default class TagPageHeader extends Component {
         <div className = 'TagsPageHeader'>
           <div className = 'numoftags'><h2>{this.state.num_of_tags} Tags</h2></div>
           <div className = 'alltags'><h1>All Tags</h1></div>
-          <button className = "tagsq" id="addqtagspage" onClick={this.props.onAskQuestion}>Add Question</button>
+          {this.props.user &&(<button className = "tagsq" id="addqtagspage" onClick={this.props.onAskQuestion}>Add Question</button>)}
         </div>
       </div>
     );
