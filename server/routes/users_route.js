@@ -83,6 +83,25 @@ router.route('/add').post(async (req, res) => {
   }
 
   });
+  router.route('/check-existing-email').post(async (req,res)=>{
+    const { email } = req.body;
+
+    try {
+        const user = await User.findOne({ email: email });
+        if (!user) {
+            //no user found
+            return res.json({ valid_email: true});
+        }else{
+          return res.json({ valid_email: false});
+        }
+
+       
+    } catch (err) {
+        console.error("Server error:", err);
+        res.status(500).json({ message: 'Error: ' + err });
+    }
+
+  });
 
 
 
