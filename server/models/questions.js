@@ -10,6 +10,8 @@ var QuestionSchema = new Schema({
     askDate: { type: Date, default: Date.now },
     answers: [{ type: Schema.Types.ObjectId, ref: 'Answer' }],
     views: { type: Number, default: 0 },
+    upvotes: { type: [{ type: Schema.Types.ObjectId, ref: 'User' }], default: [] },  
+    downvotes: { type: [{ type: Schema.Types.ObjectId, ref: 'User' }], default: [] },  
 });
 
 QuestionSchema.virtual('url').get(function () {

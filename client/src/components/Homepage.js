@@ -33,7 +33,8 @@ class Homepage extends Component {
       sortedbyunanswered:false,
       page_controls:true,
       current_page:0,
-      question_per_page:5
+      question_per_page:5,
+      currUser: null,
     };
     this.model = new Model();
     this.handlehomepage = this.handlehomepage.bind(this);
@@ -135,9 +136,34 @@ class Homepage extends Component {
     }));
 
   };
+  handleUpVote = async (qid) => {
+    const { user } = this.props;
+    
+    const userId = user.id
+    console.log(userId);
+    try {
+      console.log(qid, user.id);
+      
+      const response = await axios.post(`http://localhost:8000/questions/${qid}/${userId}/upvote`)
+      console.log(response);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  handleDownvote = async (qid) => {
+    const {  user } = this.props;
+    
+    try {
+      const response = await axios.post(`http://localhost:8000/questions/${qid}/${user.id}/downvote`)
+      console.log(response);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
 
-
+  
 
   renderQuestions() {
     let questions = this.state.questions;
@@ -149,6 +175,10 @@ class Homepage extends Component {
           question={question}
           onViewQuestion={this.handleViewQuestion}
           tagName={question.tags} 
+          userId={this.props.user} // Pass the user ID to Question component
+          onUpVote={this.handleUpVote} // Pass the upvote function to Question component
+          onDownVote={this.handleDownvote} // Pass the downvote function to Question component
+
         />
     ));
     }else if(this.state.sortedbyactive){
@@ -167,6 +197,9 @@ class Homepage extends Component {
         question={question}
         onViewQuestion={this.handleViewQuestion}
         tagName={question.tags} 
+        onUpVote={this.handleUpVote} // Pass the upvote function to Question component
+        onDownVote={this.handleDownvote} // Pass the downvote function to Question component
+        
       />
   ));
     
@@ -197,6 +230,7 @@ class Homepage extends Component {
     const viewedQuestion = this.state.questions.find((question) => question._id === qid);
     if (viewedQuestion) {
       try {
+        
         const response = await axios.post(`http://localhost:8000/questions/${qid}/view`);
         viewedQuestion.views = response.data.views;
         this.setState({
@@ -308,6 +342,8 @@ class Homepage extends Component {
           question={question}
           onViewQuestion={(qid) => this.handleViewQuestion(qid)}
           tagName={this.model.getTagsOfQuestion(question)}
+          onUpVote={this.handleUpVote} // Pass the upvote function to Question component
+          onDownVote={this.handleDownvote} // Pass the downvote function to Question component
         />
       ));
       return <div className="question-list">{searchResults}</div>;
@@ -378,6 +414,7 @@ class Homepage extends Component {
   };
   render() {
     const { user } = this.props;
+    
     console.log("Logout prop in Homepage:", this.props.logout);
     return (
       

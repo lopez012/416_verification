@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import FormatDate from './FormatDate';
 
+
 class Question extends Component {
+
   render() {
-    const { question, onViewQuestion, tagName } = this.props;
+    
+    const { question, onViewQuestion, tagName, onUpVote, onDownVote  } = this.props;
     const formattedDate = FormatDate(question.askDate);
 
     return (
@@ -13,6 +16,17 @@ class Question extends Component {
             <span style={{ color: 'grey' }}>{question.answers.length} answers</span>
             <div style={{ color: 'grey' }}>{question.views} views</div>
           </div>
+          {/* upvote button*/}
+          <button onClick={() => onUpVote(question._id)}
+           style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+               ▲
+              </button>
+          {/* Downvote Button */}
+          <button onClick={() => onDownVote(question._id)}
+           style= {{display: 'inline-block', verticalAlign: 'middle'}}>▼</button>
+              {/* Vote Count Display */}
+          <span style={{ marginLeft: '5px' }}> {question.upvotes.length - question.downvotes.length}</span>
+          <div></div>
           <div className="middle_q">
             <p style={{ margin: '0px 20px', fontSize: '20px' }}>
               <a
