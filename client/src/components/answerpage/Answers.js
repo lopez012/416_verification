@@ -33,16 +33,37 @@ export default class Answers extends Component {
     const replacedText = text.replace(regex, '<a href="$2" target="_blank">$1</a>');
     return { __html: replacedText };
   }
-  renderAnswers(answers){
-    return answers.map(answer=>(
-      <div className='answer_div' key={answer._id} >
+  renderAnswers(answers) {
+    const { onUpVote, onDownVote } = this.props;
+  
+    return answers.map(answer => (
+      <div className='answer_div' key={answer._id}>
+        {/* Answer text */}
         <div className='answer_text' dangerouslySetInnerHTML={this.hyperLinks(answer.text)} />
+  
+        {/* Vote Section (Upvote, Downvote, Vote Count) */}
+        <div className='vote-section'>
+          {/* Upvote button */}
+          <button onClick={() => onUpVote(answer._id)} style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+            ▲
+          </button>
+  
+          {/* Downvote Button */}
+          <button onClick={() => onDownVote(answer._id)} style={{ display: 'inline-block', verticalAlign: 'middle', }}>
+            ▼
+          </button>
+  
+          {/* Vote Count Display */}
+          <span style={{ marginLeft: '5px' }}>{answer.upvotes.length - answer.downvotes.length}</span>
+        </div>
+  
+        {/* Answer metadata */}
         <div className='answer_metadata'>
-          <div className='asked-by'> {answer.ans_by}</div> answered {FormatDate(answer.ans_date_time)}
+          <div className='asked-by'>{answer.ans_by}</div>
+          answered {FormatDate(answer.ans_date_time)}
         </div>
       </div>
     ));
-
   }
     
   render() {

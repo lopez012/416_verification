@@ -10,7 +10,7 @@ export default class AnswerPage extends Component {
       super(props)
     
       this.state = {
-        toggle_answer_form:false
+        toggle_answer_form:false,
       }
       this.toggle_answer_form = this.toggle_answer_form.bind(this)
     }
@@ -42,6 +42,31 @@ export default class AnswerPage extends Component {
         console.error('Error:', error);
       }
     };
+
+    handleUpVote01 = async (aid) => {
+      const { user } = this.props;
+      
+      const userId = user.id
+      console.log(userId);
+      try {
+        console.log(aid, user.id);
+        const response = await axios.post(`http://localhost:8000/answers/${aid}/${userId}/upvote`)
+        console.log(response);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+  
+    handleDownvote01 = async (aid) => {
+      const {  user } = this.props;
+      
+      try {
+        const response = await axios.post(`http://localhost:8000/answers/${aid}/${user.id}/downvote`)
+        console.log(response);
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
   
   render() {
     if(this.state.toggle_answer_form){
@@ -52,13 +77,16 @@ export default class AnswerPage extends Component {
     <AnswerPageHeader 
     question={this.props.question} 
     onAskQuestion={this.props.onAskQuestion} 
-    user ={this.props.user}
     onUpVote = {this.handleUpVote}
     onDownVote = {this.handleDownvote}
+    user ={this.props.user}
     />
     <QuestionInfo question={this.props.question} />
     <Answers
       questionid={this.props.question._id}
+      user ={this.props.user}
+      onUpVote = {this.handleUpVote01}
+      onDownVote = {this.handleDownvote01}
       //model={this.props.model}
     />
     {this.props.user &&

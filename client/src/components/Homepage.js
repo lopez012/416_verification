@@ -145,6 +145,8 @@ class Homepage extends Component {
       console.log(qid, user.id);
       
       const response = await axios.post(`http://localhost:8000/questions/${qid}/${userId}/upvote`)
+      this.fetchQuestions();
+
       console.log(response);
     } catch (error) {
       console.error('Error:', error);
@@ -156,9 +158,22 @@ class Homepage extends Component {
     
     try {
       const response = await axios.post(`http://localhost:8000/questions/${qid}/${user.id}/downvote`)
+      this.fetchQuestions();
       console.log(response);
     } catch (error) {
       console.error('Error:', error);
+    }
+  };
+
+    fetchQuestions = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/questions/all');
+      const questions = response.data;
+      this.setState({ questions });
+      let count = questions.length;
+      this.setState({ question_count: count });
+    } catch (error) {
+      console.error('Error fetching questions:', error);
     }
   };
 

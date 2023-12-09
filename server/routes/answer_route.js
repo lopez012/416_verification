@@ -48,4 +48,78 @@ router.route('/:id').get((req,res)=>{
         .catch(err => res.status(400).json('error: '+ err));
 });
 
+router.route('/:aid/:userId/upvote').post(async (req, res) => {
+    console.log("hello");
+    const { aid, userId } = req.params;
+    console.log(aid);
+    console.log(userId);
+
+    try {
+      const answer = await Answer.findById(aid);
+      if (!Answer) {
+        res.status(404).json({ error: 'Question not found' });
+      } else {
+        const isUpvoted = answer.upvotes.includes(userId);
+        const isDownvoted = answer.downvotes.includes(userId);
+  
+        if (!isUpvoted) {
+          // Add the upvote
+          answer.upvotes.push(userId);
+
+          // If user has downvoted before, remove the downvote
+          if (isDownvoted) {
+            answer.downvotes.pull(userId);
+            await answer.save();
+          }
+          await answer.save();
+          res.json({ message: 'Upvoted successfully' });
+        } else {
+          // Remove the upvote
+          answer.upvotes.pull(userId);
+          await answer.save();
+          res.json({ message: 'Upvote removed successfully' });
+        }
+      }
+    } catch (err) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
+  // Add a downvote to a question
+  router.route('/:aid/:userId/downvote').post(async (req, res) => {
+
+      const { aid, userId } = req.params;
+    try {
+      const answer = await Answer.findById(aid);
+      if (!answer) {
+        res.status(404).json({ error: 'Question not found' });
+      } else {
+        const isUpvoted = answer.upvotes.includes(userId);
+        const isDownvoted = answer.downvotes.includes(userId);
+  
+        if (!isDownvoted) {
+          // Add the downvote
+          answer.downvotes.push(userId);
+          await answer.save();
+  
+          // If user has upvoted before, remove the upvote
+          if (isUpvoted) {
+            answer.upvotes.pull(userId);
+            await answer.save();
+          }
+  
+          res.json({ message: 'Downvoted successfully' });
+        } else {
+          // Remove the downvote
+          answer.downvotes.pull(userId);
+          await answer.save();
+          res.json({ message: 'Downvote removed successfully' });
+        }
+      }
+    } catch (err) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+  
+
 module.exports = router;
