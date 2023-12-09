@@ -28,7 +28,7 @@ export default class RegisterForm extends Component {
         password_verification_error: ''
       })
     }
-    handleSubmitForm(event){
+    handleSubmitForm = async(event)=>{
       event.preventDefault();
       let username_error = '';
       let email_error = '';
@@ -44,17 +44,38 @@ export default class RegisterForm extends Component {
         email_error = 'Please enter an Email: '
         validinput = false;
       }
-      //TODO: verify password and verfication match. 
-      //      implement constraints on password, email , and username.
+      const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+\.[a-zA-Z]+$/;
+      if(!regex.test(this.state.email)){
+        validinput = false;
+        email_error = 'email is not correct format'
+      }
+   
+      
       if(!this.state.password){
         password_error = 'Please enter a password: '
         validinput = false;
-
       }
       if(this.state.password!==this.state.password_verification){
         password_verification_error = 'Passwords do not match!'
         validinput = false;
       }
+      const emailid = this.state.email.split('@')[0];
+
+    if (this.state.password.includes(this.state.username) || this.state.password.includes(emailid)) {
+        validinput = false;
+        password_verification_error = 'password cannot contain username or email.'
+    }
+
+      
+      const res = await axios.post('http://localhost:8000/users/check-existing-email', { email:this.state.email });
+      if(res.data.valid_email===false){
+        validinput = false;
+        email_error = 'Email already exists' 
+      }
+      
+      
+
+
       if(validinput){
 
         const user_data = {
@@ -74,7 +95,6 @@ export default class RegisterForm extends Component {
                     password_verification:'', 
                     username_error:'',
                     password_error:'',
-                    password_verification: '',
                     email_error:'',  
                   });
             })
