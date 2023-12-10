@@ -380,18 +380,39 @@ class Homepage extends Component {
         </p>
       </div>
       );
-    } else {
-      const searchResults = this.state.searchResults.map((question) => (
+    } 
+    else {
+      const totalSearchPages = Math.ceil(this.state.searchResults.length / this.state.question_per_page);
+      const startSearchIndex = this.state.current_page * this.state.question_per_page;
+      const searchResultsOnPage = this.state.searchResults.slice(
+        startSearchIndex,
+        startSearchIndex + this.state.question_per_page
+      );
+  
+      const searchResultsComp = searchResultsOnPage.map((question) => (
         <Question
           key={question.qid}
           question={question}
           onViewQuestion={(qid) => this.handleViewQuestion(qid)}
           tagName={this.model.getTagsOfQuestion(question)}
-          onUpVote={this.handleUpVote} // Pass the upvote function to Question component
-          onDownVote={this.handleDownvote} // Pass the downvote function to Question component
+          onUpVote={this.handleUpVote}
+          onDownVote={this.handleDownvote}
         />
       ));
-      return <div className="question-list">{searchResults}</div>;
+  
+      return (
+        <div>
+          <div className="question-list">{searchResultsComp}</div>
+          <div className="pagination-buttons">
+            <button onClick={this.prev_page} disabled={this.state.current_page === 0}>
+              Prev
+            </button>
+            <button onClick={this.next_page} disabled={this.state.current_page === totalSearchPages - 1}>
+              Next
+            </button>
+          </div>
+        </div>
+      );
     }
   };
 
