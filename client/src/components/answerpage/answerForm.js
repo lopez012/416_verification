@@ -22,13 +22,13 @@ export default class AnswerForm extends Component {
   }
   handleSubmitForm(event){
     event.preventDefault();
-    let username_error = '';
+    //let username_error = '';
     let answer_text_error = '';
     let validinput = true;
-    if(!this.state.answer_username){
+    /*if(!this.state.answer_username){
       username_error = 'Please enter a Username '
       validinput = false;
-    }
+    }*/
     if(!this.state.answer_text){
       answer_text_error = 'Please enter an answer: '
       validinput = false;
@@ -36,7 +36,7 @@ export default class AnswerForm extends Component {
     if(validinput){
         const answer_data = {
             text: this.state.answer_text,
-            ans_by: this.state.answer_username,
+            ans_by: this.props.user,
             ans_date_time: new Date(),
             questionId: this.props.qid
         };
@@ -45,7 +45,7 @@ export default class AnswerForm extends Component {
             .then(res=> {
                 this.props.toggleForm();
                 this.setState({
-                    answer_username: '',
+                    //answer_username: '',
                     answer_text: '',
                     username_error: '',  
                     answer_text_error: ''  
@@ -66,7 +66,7 @@ export default class AnswerForm extends Component {
       });
       */
     }else{
-      this.setState({username_error,answer_text_error});
+      this.setState({answer_text_error});
     }
   }
 
@@ -75,13 +75,7 @@ export default class AnswerForm extends Component {
   render() {
     return (
       <form id = "answer_form" onSubmit={this.handleSubmitForm}>
-        <label className='answer_username' >Username*</label><br/>
-        <input 
-        type="text" 
-        name="answer_username" 
-        value = {this.state.answer_username} 
-        onChange={this.handleInputChange} /><br/>
-        <div id = "username_error">{this.state.username_error?this.state.username_error:''}</div>
+        
         <label className='answer_username'>Answer Text*</label><br/>
         <textarea  
         id="answer_text" 
