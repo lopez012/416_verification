@@ -153,10 +153,13 @@ class Homepage extends Component {
 
   };
   handleUpVote = async (qid) => {
-    const { user } = this.props;
-    
+    const { user } = this.props;    
     const userId = user._id
-    console.log(userId);
+    const userReputation = user.reputation;
+    const response = await axios.get(`http://localhost:8000/questions/${qid}`);
+    const askedBy = response.data.askedBy;
+    if (userReputation >= 50) {
+     if(askedBy !== user._id){
     try {
       console.log(qid, user._id);
       
@@ -164,21 +167,42 @@ class Homepage extends Component {
       this.fetchQuestions();
 
       console.log(response);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Error:', error);
+    }}
+    else {
+      alert("can't upvote your own own questions");
+    }
+    }
+    else {
+      alert('You need 50 or more reputation to upvote.');
     }
   };
 
   handleDownvote = async (qid) => {
     const {  user } = this.props;
-    
+    const userReputation = user.reputation;
+    const response = await axios.get(`http://localhost:8000/questions/${qid}`);
+    const askedBy = response.data.askedBy;
+    if (userReputation >= 50){
+      if(askedBy !== user._id){
     try {
-      const response = await axios.post(`http://localhost:8000/questions/${qid}/${user._id}/downvote`)
+
+      const response = await axios.post(`http://localhost:8000/questions/${qid}/${user._id}/downvote`);
       this.fetchQuestions();
       console.log(response);
     } catch (error) {
       console.error('Error:', error);
     }
+    }
+    else {
+      alert("can't downvote your own own questions");
+    }
+  }
+   else {
+    alert('You need 50 or more reputation to downvote.');
+   }
   };
 
     fetchQuestions = async () => {
