@@ -59,7 +59,7 @@ export default class Answers extends Component {
   
         {/* Answer metadata */}
         <div className='answer_metadata'>
-          <div className='asked-by'>{answer.ans_by}</div>
+          <div className='asked-by'>{answer.ans_by.username}</div>
           answered {FormatDate(answer.ans_date_time)}
         </div>
       </div>

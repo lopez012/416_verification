@@ -70,7 +70,7 @@ export default class AnswerPage extends Component {
   
   render() {
     if(this.state.toggle_answer_form){
-        return <AnswerForm toggleForm = {this.toggle_answer_form} qid={this.props.question._id} /> 
+        return <AnswerForm toggleForm = {this.toggle_answer_form} qid={this.props.question._id} user = {this.props.user}/> 
     }
     return (
 <div>

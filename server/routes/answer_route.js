@@ -30,7 +30,13 @@ router.route('/add').post((req, res)=> {
 //return answers for a given question
 router.route('/question/:id').get((req,res)=>{
     Question.findById(req.params.id)
-        .populate('answers')
+        .populate({
+            path: 'answers', 
+            populate: {
+                path: 'ans_by', 
+                model: 'User' 
+            }
+        })
         .then( question=>{
             if(!question){
                 return res.status(404).json('question not found');

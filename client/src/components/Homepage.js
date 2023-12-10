@@ -261,7 +261,8 @@ class Homepage extends Component {
     const viewedQuestion = this.state.questions.find((question) => question._id === qid);
     if (viewedQuestion) {
       try {
-        
+
+        console.log(qid);
         const response = await axios.post(`http://localhost:8000/questions/${qid}/view`);
         viewedQuestion.views = response.data.views;
         this.setState({
@@ -526,7 +527,7 @@ class Homepage extends Component {
                 onBackToQuestions={this.handleBackToQuestions}
                 //model={this.model}
                 onAskQuestion={this.toggleQuestionForm}
-                user ={this.props.user}
+                user ={this.state.currUser}
               />
             )
           : this.state.displayquestions?
