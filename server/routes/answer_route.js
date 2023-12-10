@@ -76,14 +76,17 @@ router.route('/:aid/:userId/upvote').post(async (req, res) => {
           if (isDownvoted) {
             answer.downvotes.pull(userId);
             await answer.save();
+            res.json({ message: '+15' });
           }
-          await answer.save();
-          res.json({ message: 'Upvoted successfully' });
+          else {
+            await answer.save();
+            res.json({ message: '+5' });
+          }
         } else {
           // Remove the upvote
           answer.upvotes.pull(userId);
           await answer.save();
-          res.json({ message: 'Upvote removed successfully' });
+          res.json({ message: '-5' });
         }
       }
     } catch (err) {
@@ -106,20 +109,23 @@ router.route('/:aid/:userId/upvote').post(async (req, res) => {
         if (!isDownvoted) {
           // Add the downvote
           answer.downvotes.push(userId);
-          await answer.save();
   
           // If user has upvoted before, remove the upvote
           if (isUpvoted) {
             answer.upvotes.pull(userId);
             await answer.save();
+            res.json({ message: '-15' });
+          }
+          else {
+            await answer.save();
+            res.json({ message: '-10' });
           }
   
-          res.json({ message: 'Downvoted successfully' });
         } else {
           // Remove the downvote
           answer.downvotes.pull(userId);
           await answer.save();
-          res.json({ message: 'Downvote removed successfully' });
+          res.json({ message: '+10' });
         }
       }
     } catch (err) {

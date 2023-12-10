@@ -26,12 +26,12 @@ export default class AnswerPage extends Component {
       if (userReputation >= 50) {
        if(askedBy !== user._id){
       try {
-        console.log(qid, user._id);
         
-        const response = await axios.post(`http://localhost:8000/questions/${qid}/${userId}/upvote`)
-        this.fetchQuestions();
-  
-        console.log(response);
+        
+        const vote = await axios.post(`http://localhost:8000/questions/${qid}/${userId}/upvote`)
+        const voteMessage = vote.data.message;
+        const response = await axios.post(`http://localhost:8000/users/${askedBy}/${voteMessage}`);
+        console.log(response.data.message);
       } 
       catch (error) {
         console.error('Error:', error);
@@ -53,9 +53,11 @@ export default class AnswerPage extends Component {
       if (userReputation >= 50){
         if(askedBy !== user._id){
       try {
-  
-        const response = await axios.post(`http://localhost:8000/questions/${qid}/${user._id}/downvote`);
-        this.fetchQuestions();
+        console.log("ivan");
+        const vote = await axios.post(`http://localhost:8000/questions/${qid}/${user._id}/downvote`);
+        const voteMessage = vote.data.message;
+        const response = await axios.post(`http://localhost:8000/users/${askedBy}/${voteMessage}`);
+        
         console.log(response);
       } catch (error) {
         console.error('Error:', error);
@@ -81,7 +83,9 @@ export default class AnswerPage extends Component {
         if(user._id !== askedBy){
       try {
         console.log(aid, user._id);
-        const response = await axios.post(`http://localhost:8000/answers/${aid}/${userId}/upvote`)
+        const vote = await axios.post(`http://localhost:8000/answers/${aid}/${userId}/upvote`);
+        const voteMessage = vote.data.message;
+        const response = await axios.post(`http://localhost:8000/users/${askedBy}/${voteMessage}`);
         console.log(response);
       } catch (error) {
         console.error('Error:', error);
@@ -106,9 +110,9 @@ export default class AnswerPage extends Component {
       if(userReputation >= 50){
         if(user._id !== askedBy){
       try {
-        console.log(aid, user._id);
-        const response = await axios.post(`http://localhost:8000/answers/${aid}/${userId}/downvote`)
-        console.log(response);
+        const vote = await axios.post(`http://localhost:8000/answers/${aid}/${userId}/downvote`);
+        const voteMessage = vote.data.message;
+        const response = await axios.post(`http://localhost:8000/users/${askedBy}/${voteMessage}`);
       } catch (error) {
         console.error('Error:', error);
       }

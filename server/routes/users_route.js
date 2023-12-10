@@ -129,7 +129,38 @@ router.route('/add').post(async (req, res) => {
     }
 });
 
+router.route('/:id/:vote').post(async (req, res) => {
+  const { id, vote } = req.params;
 
+  try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Convert the string vote to a number
+    const voteValue = parseInt(vote, 10);
+
+    if (isNaN(voteValue)) {
+      return res.status(400).json({ message: 'Invalid vote value' });
+    }
+
+    // Update the reputation based on the sign of the vote
+    if (voteValue > 0) {
+      user.reputation += voteValue;
+    } else if (voteValue < 0) {
+      user.reputation -= Math.abs(voteValue);
+    }
+
+    await user.save();
+
+    res.json({ message: 'Vote processed successfully'});
+  } catch (err) {
+    console.error('Server error:', err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 
 
   module.exports = router;

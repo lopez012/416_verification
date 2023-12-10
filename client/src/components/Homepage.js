@@ -163,7 +163,9 @@ class Homepage extends Component {
     try {
       console.log(qid, user._id);
       
-      const response = await axios.post(`http://localhost:8000/questions/${qid}/${userId}/upvote`)
+      const vote = await axios.post(`http://localhost:8000/questions/${qid}/${userId}/upvote`);
+      const voteMessage = vote.data.message;
+      const response = await axios.post(`http://localhost:8000/users/${askedBy}/${voteMessage}`);
       this.fetchQuestions();
 
       console.log(response);
@@ -189,7 +191,9 @@ class Homepage extends Component {
       if(askedBy !== user._id){
     try {
 
-      const response = await axios.post(`http://localhost:8000/questions/${qid}/${user._id}/downvote`);
+      const vote = await axios.post(`http://localhost:8000/questions/${qid}/${user._id}/downvote`);
+      const voteMessage = vote.data.message;
+      const response = await axios.post(`http://localhost:8000/users/${askedBy}/${voteMessage}`);
       this.fetchQuestions();
       console.log(response);
     } catch (error) {

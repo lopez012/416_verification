@@ -105,7 +105,6 @@ router.route('/:id/answers').get(async (req, res) => {
     const { qid, userId } = req.params;
     console.log(qid);
     console.log(userId);
-
     try {
       const question = await Question.findById(qid);
       if (!question) {
@@ -117,20 +116,20 @@ router.route('/:id/answers').get(async (req, res) => {
         if (!isUpvoted) {
           // Add the upvote
           question.upvotes.push(userId);
-         
-  
           // If user has downvoted before, remove the downvote
           if (isDownvoted) {
             question.downvotes.pull(userId);
             await question.save();
-          }
+            res.json({ message: '+15' });
+          }else {
           await question.save();
-          res.json({ message: 'Upvoted successfully' });
+          res.json({ message: '+5' });
+          }
         } else {
           // Remove the upvote
           question.upvotes.pull(userId);
           await question.save();
-          res.json({ message: 'Upvote removed successfully' });
+          res.json({ message: '-5' });
         }
       }
     } catch (err) {
@@ -153,20 +152,24 @@ router.route('/:id/answers').get(async (req, res) => {
         if (!isDownvoted) {
           // Add the downvote
           question.downvotes.push(userId);
-          await question.save();
+          
   
           // If user has upvoted before, remove the upvote
           if (isUpvoted) {
             question.upvotes.pull(userId);
             await question.save();
+            res.json({ message: '-15' });
           }
-  
-          res.json({ message: 'Downvoted successfully' });
+          else {
+            await question.save();
+            res.json({ message: '-10' });
+          }
+
         } else {
           // Remove the downvote
           question.downvotes.pull(userId);
           await question.save();
-          res.json({ message: 'Downvote removed successfully' });
+          res.json({ message: '+10' });
         }
       }
     } catch (err) {
