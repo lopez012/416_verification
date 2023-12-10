@@ -45,6 +45,7 @@ router.route('/add').post(async (req, res) => {
       res.status(400).json('Error: ' + err);
     }
   });
+
   
   router.route('/login').post(async (req,res)=>{
     const { email, password } = req.body;
@@ -64,11 +65,11 @@ router.route('/add').post(async (req, res) => {
         //valid login
         
       
-        req.session.user = { id: user._id, email: user.email,username: user.username, role: user.role, reputation: user.reputation, member_since: user.member_since };
+        req.session.user = { _id: user._id, email: user.email,username: user.username, role: user.role, reputation: user.reputation, member_since: user.member_since };
         //res.cookie( user._id, { httpOnly: true, secure: true});
         res.status(200).json({
             message: "User Logged in ",
-            user: { id: user.email, email: user.email,username: user.username, role: user.role, reputation: user.reputation, member_since: user.member_since }
+            user: { _id: user._id, email: user.email,username: user.username, role: user.role, reputation: user.reputation, member_since: user.member_since }
         });
     } catch (err) {
         console.error("Server error:", err);
@@ -114,6 +115,19 @@ router.route('/add').post(async (req, res) => {
       }
   });
   });
+  router.route('/:id').get(async (req, res) => {
+    const { id } = req.params;
+    try {
+        const user = await User.findOne({ _id: id });
+        if (!user) {
+            return res.status(404).json({ message: "user not found" });
+        } else {
+            return res.json(user);
+        }
+    } catch (err) {
+        console.error('Server error:', err);
+    }
+});
 
 
 

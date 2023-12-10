@@ -33,6 +33,7 @@ class WelcomePage extends Component {
       axios.get('http://localhost:8000/users/verify-session')
         .then(response => {
             if (response.data.sessionValid) {
+              console.log("valid-session");
                 this.setState({ Logged_In_User: response.data.user });
             } else {
                 this.setState({ Logged_In_User: null });
@@ -55,7 +56,7 @@ class WelcomePage extends Component {
     }
     logout() {
       
-      console.log("Logout clicked");
+      //console.log("Logout clicked");
       this.setState({
           toggle_register_form:false,
           toggle_login_form:false,
@@ -69,7 +70,7 @@ class WelcomePage extends Component {
             this.setState({ Logged_In_User: null });
         });
         
-        console.log('Test logout function');
+       //console.log('Test logout function');
 
 
 
@@ -77,7 +78,7 @@ class WelcomePage extends Component {
 
 
     showhomepage(event) {
-        console.log("showhomepage method called");
+        //console.log("showhomepage method called");
 
         this.setState({ 
           toggle_register_form:false,
