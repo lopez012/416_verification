@@ -53,6 +53,22 @@ class Homepage extends Component {
     } catch (error) {
       console.error('Error fetching questions:', error);
     }
+    
+    if(this.props.user){
+      console.log(`user loggedin with id ${this.props.user._id}`);
+      try{
+        const res = await axios.get(`http://localhost:8000/users/${this.props.user._id}`);
+        if(res.data){
+          console.log('user found!');
+          this.setState({currUser:res.data});
+        }else{
+          console.log("user not found")
+        }
+
+      }catch(error){
+        console.error('err',error);
+      }
+    }
   }
   handlehomepage(event){
     this.setState({
@@ -139,10 +155,10 @@ class Homepage extends Component {
   handleUpVote = async (qid) => {
     const { user } = this.props;
     
-    const userId = user.id
+    const userId = user._id
     console.log(userId);
     try {
-      console.log(qid, user.id);
+      console.log(qid, user._id);
       
       const response = await axios.post(`http://localhost:8000/questions/${qid}/${userId}/upvote`)
       this.fetchQuestions();
@@ -157,7 +173,7 @@ class Homepage extends Component {
     const {  user } = this.props;
     
     try {
-      const response = await axios.post(`http://localhost:8000/questions/${qid}/${user.id}/downvote`)
+      const response = await axios.post(`http://localhost:8000/questions/${qid}/${user._id}/downvote`)
       this.fetchQuestions();
       console.log(response);
     } catch (error) {
@@ -435,7 +451,7 @@ class Homepage extends Component {
   render() {
     const { user } = this.props;
     
-    console.log("Logout prop in Homepage:", this.props.logout);
+    //console.log("Logout prop in Homepage:", this.props.logout);
     return (
       
       <div>
@@ -470,7 +486,7 @@ class Homepage extends Component {
           {
             this.state.initSearch ? this.renderSearch() :
             this.state.displayQuestionForm
-          ? (<QuestionForm onQuestionSubmit={this.handleQuestionSubmit} />
+          ? (<QuestionForm onQuestionSubmit={this.handleQuestionSubmit} user={this.state.currUser}/>
           ) : this.state.showAnswer? (
              <AnswerPage
                 question={this.state.viewedQuestion}

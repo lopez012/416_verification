@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function QuestionForm({ onQuestionSubmit }) {
+function QuestionForm({ onQuestionSubmit,user}) {
   const [formData, setFormData] = useState({
     questionTitle: '',
     questionText: '',
@@ -156,7 +156,9 @@ function QuestionForm({ onQuestionSubmit }) {
         <span id="question_text_error" className="error-message" style={{ color: 'red' }}>
           {errors.questionText}
         </span>
-        <h2>Tags*</h2>
+        <h1>User Rep: {user?user.reputation:''}</h1>
+        {user&&
+        (<><h2>Tags*</h2>
         <label htmlFor="tags">Add keywords separated by whitespace</label>
         <br />
         <input
@@ -168,7 +170,7 @@ function QuestionForm({ onQuestionSubmit }) {
         />
         <span id="tags_error" className="error-message" style={{ color: 'red' }}>
           {errors.tags}
-        </span>
+        </span></>)}
         
       
         <br />

@@ -20,10 +20,10 @@ export default class AnswerPage extends Component {
     handleUpVote = async (qid) => {
       const { user } = this.props;
       
-      const userId = user.id
+      const userId = user._id
       console.log(userId);
       try {
-        console.log(qid, user.id);
+        console.log(qid, user._id);
         
         const response = await axios.post(`http://localhost:8000/questions/${qid}/${userId}/upvote`)
         console.log(response);
@@ -36,7 +36,7 @@ export default class AnswerPage extends Component {
       const {  user } = this.props;
       
       try {
-        const response = await axios.post(`http://localhost:8000/questions/${qid}/${user.id}/downvote`)
+        const response = await axios.post(`http://localhost:8000/questions/${qid}/${user._id}/downvote`)
         console.log(response);
       } catch (error) {
         console.error('Error:', error);
@@ -46,10 +46,10 @@ export default class AnswerPage extends Component {
     handleUpVote01 = async (aid) => {
       const { user } = this.props;
       
-      const userId = user.id
+      const userId = user._id
       console.log(userId);
       try {
-        console.log(aid, user.id);
+        console.log(aid, user._id);
         const response = await axios.post(`http://localhost:8000/answers/${aid}/${userId}/upvote`)
         console.log(response);
       } catch (error) {
@@ -61,7 +61,7 @@ export default class AnswerPage extends Component {
       const {  user } = this.props;
       
       try {
-        const response = await axios.post(`http://localhost:8000/answers/${aid}/${user.id}/downvote`)
+        const response = await axios.post(`http://localhost:8000/answers/${aid}/${user._id}/downvote`)
         console.log(response);
       } catch (error) {
         console.error('Error:', error);
