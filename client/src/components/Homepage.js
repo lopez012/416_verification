@@ -400,7 +400,9 @@ class Homepage extends Component {
     const title = formData.questionTitle;
     const text = formData.questionText;
     const Tags = formData.tags;
-    const askedBy = formData.username
+    const { user } = this.props;
+    const askedBy = user._id;
+    const summary = formData.summary;
 
     const tagArray = Tags.trim().split(/\s+/).slice(0, 5);
   
@@ -435,7 +437,8 @@ class Homepage extends Component {
         title,
         text,
         tags,
-        askedBy
+        askedBy, 
+        summary,
       });
       console.log('Question added successfully:', response.data);
       const updatedResponse = await axios.get('http://localhost:8000/questions/all');

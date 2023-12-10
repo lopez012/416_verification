@@ -1,12 +1,29 @@
 import React, { Component } from 'react';
 import FormatDate from './FormatDate';
-
+import axios from 'axios';
 
 class Question extends Component {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      askedByUsername: null,
+    };
+  }
+  async componentDidMount() {
+    const { question } = this.props;
+    if (question.askedBy) {
+      try {
+        const response = await axios.get(`http://localhost:8000/users/${question.askedBy}`);
+        this.setState({ askedByUsername: response.data.username });
+      } catch (error) {
+        console.error('Error fetching username:', error);
+      }
+    }
+  }
   render() {
     
     const { question, onViewQuestion, tagName, onUpVote, onDownVote  } = this.props;
+    const { askedByUsername } = this.state;
     const formattedDate = FormatDate(question.askDate);
 
     return (
@@ -52,7 +69,7 @@ class Question extends Component {
 </div>
           </div>  
           <div className="right_q">
-            <div style={{ color: 'red' }}>{question.askedBy}</div>
+            <div style={{ color: 'red' }}>{askedByUsername}</div>
             <div>asked {formattedDate}</div>
           </div>
         </div>

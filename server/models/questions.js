@@ -7,7 +7,7 @@ var QuestionSchema = new Schema({
     summary: {type: String, required: true, maxlength: 140 } ,
     text: { type: String, required: true },
     tags: [{ type: Schema.Types.ObjectId, ref: 'Tag', required: true }],
-    askedBy: { type: String, required: true, default: 'Anonymous' },
+    askedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     askDate: { type: Date, default: Date.now },
     answers: [{ type: Schema.Types.ObjectId, ref: 'Answer' }],
     views: { type: Number, default: 0 },
