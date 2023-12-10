@@ -15,6 +15,12 @@ router.route('/:tagname').get((req, res) => {
       .catch(err => res.status(400).json('error: ' + err));
   });
   
+  router.route('/:tagname/01').get((req, res) => {
+    const tagName = new RegExp('^' + req.params.tagname + '$', 'i'); // Case-insensitive regex
+    Tag.findOne({ name: { $regex: tagName } })
+      .then(tag => res.json(tag))
+      .catch(err => res.status(400).json('error: ' + err));
+});
 router.route('/add').post((req,res)=>{
     const name = req.body.name;
 

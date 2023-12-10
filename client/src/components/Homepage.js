@@ -299,7 +299,7 @@ class Homepage extends Component {
       console.log('State after clicking Unanswered:', this.state);      
     });
   }
-  handleSearch = (searchString) => {
+  handleSearch = async (searchString) => {
     if(searchString.trim() === "") {
      return;
     } 
@@ -308,20 +308,34 @@ class Homepage extends Component {
     const nonTagSearch = searchWords.filter((word) => !word.startsWith('[') || !word.endsWith(']'));
 
     const tagsToSearch = tagSearch.map((tag) => tag.replace(/\[|\]/g, '').toLowerCase());
-    let searchResults;
+    
+    const tagIds = await Promise.all(tagsToSearch.map(async (tagName) => {
+      try {
+          const response = await axios.get(`http://localhost:8000/tags/${tagName}/01`);
+          return response.data?._id;
+      } catch (error) {
+          console.error('Error fetching tag ID:', error);
+          return null;
+      }
+  }));
+  const validTagIds = tagIds.filter(id => id !== null);
+  console.log(validTagIds);
 
+    let searchResults;
+    console.log("fdd");
+  console.log(validTagIds);
     if (nonTagSearch.length === 0) {
       searchResults = this.state.questions.filter((question) => {
-        const tags = this.model.getTagsOfQuestion(question).map((tag) => tag.toLowerCase());
-        return tagsToSearch.some((tagToSearch) => tags.includes(tagToSearch));
+          const tags = question.tags.map((tag) => tag._id);
+          return tags.some((tagId) => validTagIds.includes(tagId));
       });
-    }
+  }
     else {
       searchResults = this.state.questions.filter((question) => {
         const title = question.title.toLowerCase();
         const text = question.text.toLowerCase();
-        const tags = this.model.getTagsOfQuestion(question).map((tag) => tag.toLowerCase());
-        const tagsMatch = tagsToSearch.some((tagToSearch) => tags.includes(tagToSearch));
+        const tags = question.tags.map((tag) => tag._id);
+        const tagsMatch = tags.some((tagId) => validTagIds.includes(tagId));
         const otherWordsMatch = nonTagSearch.every((word) => title.includes(word) || text.includes(word));
         return tagsMatch || otherWordsMatch;
       });
@@ -370,11 +384,7 @@ class Homepage extends Component {
     const title = formData.questionTitle;
     const text = formData.questionText;
     const Tags = formData.tags;
-    //TODO: username for registered users
-    //const askedBy = formData.username
-    const summary = formData.summary;
-    const askedBy = this.props.user.username;
-    console.log(askedBy);
+    const askedBy = formData.username
 
     const tagArray = Tags.trim().split(/\s+/).slice(0, 5);
   
@@ -409,7 +419,6 @@ class Homepage extends Component {
         title,
         text,
         tags,
-        summary,
         askedBy
       });
       console.log('Question added successfully:', response.data);
