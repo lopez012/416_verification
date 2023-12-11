@@ -62,6 +62,10 @@ export default class QuestionInfo extends Component {
 
 
   handleCommentClick() {
+    if(this.props.user.reputation<50){
+      alert('need 50 reputation points to comment');
+      return;
+    }
     this.setState(prevState => ({
         comment_box: !prevState.comment_box
     }));

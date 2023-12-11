@@ -12,7 +12,10 @@ export default class Answer extends Component {
           comment_box:false,
           comment_text: '',
           comment_text_error: '',
-          
+
+          page_controls:true,
+          current_page:0,
+          comments_per_page:3, 
         }
         this.handleCommentClick = this.handleCommentClick.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -21,6 +24,10 @@ export default class Answer extends Component {
  
 
 handleCommentClick() {
+  if(this.props.user.reputation<50){
+    alert('need 50 reputation points to comment');
+    return;
+  }
     this.setState(prevState => ({
         comment_box: !prevState.comment_box
     }));
@@ -71,18 +78,64 @@ handleSubmitForm(event){
       this.setState({comment_text_error});
     }
   }
+  total_pages = () =>{
+    return Math.ceil(this.props.answer.comments.length/this.state.comments_per_page);
+  };
+
+  next_page = ()=>{
+    this.setState(prevState =>({
+      current_page: (prevState.current_page +1)% this.total_pages()
+
+    }));
+  };
+  prev_page =()=>{
+    this.setState(prevState=>({
+      current_page: prevState.current_page===0?0: prevState.current_page-1
+    }));
+  };
+
+
+
+
+
+
+
   render_comments_for_answer(comments){
-    return comments.map(comment => (
+    const sorted_c = comments.sort((a, b) => {
+      const A = new Date(a.comment_time);
+      const B = new Date(b.comment_time);
+    return B - A;
+    });
+    const start_ind = this.state.current_page * this.state.comments_per_page;
+    const comments_on_ans_page = sorted_c.slice(start_ind, start_ind+this.state.comments_per_page);
+
+
+    const ans_comments = comments_on_ans_page.map(comment => (
         <Comment 
         key={comment._id}
         onUpVote = {this.props.onUpVote}
-        onDownVote = {this.props.onDownVote}
+        //onDownVote = {this.props.onDownVote}
         answer = {this.props.answer}
         //username ={comment.commented_by.username}
         comment = {comment}
         //comment_submitted = {this.props.comment_submitted}
         />
        ));
+
+       return (
+        <div>
+          <div className="comment-list">
+            {ans_comments}
+          </div>
+          {this.state.page_controls && comments.length>3&&(
+        <div className="Page_controls2">
+        <button onClick={this.prev_page} disabled={this.state.current_page === 0}>Prev</button>
+        <button onClick={this.next_page}>Next</button>
+        </div>
+        )}
+           
+        </div>
+      );
     
 
   }

@@ -607,7 +607,7 @@ class Homepage extends Component {
         )}
         {this.state.showUserProfile && (
           <UserProfile
-          user = {this.props.user}
+          user = {this.state.currUser}
           />
         )
 
