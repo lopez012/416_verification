@@ -37,6 +37,8 @@ class Homepage extends Component {
       question_per_page:5,
       currUser: null,
       showUserProfile: false, 
+      changeForm: false,
+      questionToPass: null,
     };
     this.model = new Model();
     this.handlehomepage = this.handlehomepage.bind(this);
@@ -87,6 +89,8 @@ class Homepage extends Component {
       initSearch : false,
       page_controls:true,
       showUserProfile:false,
+      changeForm: false,
+
     })
 
   }
@@ -102,6 +106,7 @@ class Homepage extends Component {
       initSearch: false,
       page_controls:false,
       showUserProfile: false,
+      changeForm: false,
     })
   }
   handletagclick(questionsoftag){
@@ -112,6 +117,7 @@ class Homepage extends Component {
       displayquestions:true,
       initSearch :false, 
       showUserProfile:false,
+      changeForm: false,
     })
   }
   sortbynewest(question_list) {
@@ -241,6 +247,9 @@ class Homepage extends Component {
       tagpage:false,
       displayquestions:false,
       page_controls: false,
+      changeForm: false,
+      showAnswer: false,
+
     });
   };
   
@@ -323,6 +332,7 @@ class Homepage extends Component {
           displaySearchHeader: false,
           page_controls:false,
           showUserProfile: false,
+          changeForm: false,
         });
       } catch (error) {
         console.error('Error updating view count:', error);
@@ -468,6 +478,39 @@ class Homepage extends Component {
     }
   };
 
+
+  handleQuestionChange = async (question) => {
+    console.log(question);
+    this.setState({
+      displayQuestionForm: true,
+      showUserProfile: false,
+      changeForm: true,
+      questionToPass : question,
+    });
+  }
+  handleDeleteQuestion = async (question) => {
+    const response = await axios.post(`http://localhost:8000/questions/${question._id}/delete`);
+    console.log(response.data);
+    const responsed = await axios.post(`http://localhost:8000/answers/${response.data.answerIds}/delete`);
+    const combinedCommentArray = response.data.commentIds.concat(responsed.data.commentArrays);
+
+    console.log(combinedCommentArray); 
+    const respons = await axios.post(`http://localhost:8000/comments/${combinedCommentArray}/delete`);
+    this.fetchQuestions();
+    alert("Question deleted!");
+
+    this.setState({
+      showUserProfile: false,
+      displayQuestionForm: false,
+      displayQuestionHeader: true,
+      displaySearchHeader:true,   
+      tagpage:false,
+      displayquestions:true,
+      page_controls: true,
+      changeForm: true,
+
+    });
+  }
   handleQuestionSubmit = async (formData) => {
     console.log('Question submitted:', formData);
     const title = formData.questionTitle;
@@ -527,7 +570,9 @@ class Homepage extends Component {
         displayquestions: true,
         questions: updatedQuestions,
         page_controls:true,
-        question_count:updated_q_count
+        question_count:updated_q_count,
+        changeForm: false,
+
       });
     } catch (error) {
       console.error('Error adding question:', error.response.data);
@@ -576,7 +621,11 @@ class Homepage extends Component {
           {
             this.state.initSearch ? this.renderSearch() :
             this.state.displayQuestionForm
-          ? (<QuestionForm onQuestionSubmit={this.handleQuestionSubmit} user={this.state.currUser}/>
+          ? (<QuestionForm
+             onQuestionSubmit={this.handleQuestionSubmit}
+              user={this.state.currUser}
+              passedQuesetion={this.state.questionToPass}
+              change = {this.state.changeForm} />
           ) : this.state.showAnswer? (
              <AnswerPage
                 question={this.state.viewedQuestion}
@@ -608,6 +657,8 @@ class Homepage extends Component {
         {this.state.showUserProfile && (
           <UserProfile
           user = {this.props.user}
+          onChangeQuestion={this.handleQuestionChange}
+          onDeleteQuestion={this.handleDeleteQuestion}
           />
         )
 

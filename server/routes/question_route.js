@@ -195,6 +195,26 @@ router.route('/:id/answers').get(async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+  //delete a question and extract comments/anser
+  router.route('/:qid/delete').post(async (req, res) => {
+    try {
+      const questionId = req.params.qid;
   
+      // Find the question by ID
+      const question = await Question.findById(questionId);
+  
+      // Extract arrays of comment and answer object IDs
+      const commentIds = question.comments.map(comment => comment._id);
+      const answerIds = question.answers.map(answer => answer._id);
+  
+      // Delete the question
+      await Question.findByIdAndDelete(questionId);
+  
+      res.json({ commentIds, answerIds });
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
 
 module.exports = router;

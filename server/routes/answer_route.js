@@ -99,7 +99,31 @@ router.route('/:aid/:userId/upvote').post(async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+  //delete answers and extract comment arrays
+  router.route('/:aids/delete').post(async (req, res) => {
+    try {
+      const answerIds = req.params.aids.split(',');
   
+      // Find and delete multiple answers by their IDs
+      const deletedAnswers = await Answer.find({ _id: { $in: answerIds } }).lean();
+  
+      // Extract and merge comment arrays from deleted answers
+      const commentArrays = deletedAnswers.reduce((acc, answer) => {
+        if (answer.comments && answer.comments.length > 0) {
+          acc.push(...answer.comments.map(comment => comment.toString()));
+        }
+        return acc;
+      }, []);
+  
+      // Delete the answers
+      await Answer.deleteMany({ _id: { $in: answerIds } });
+  
+      res.json({ answerIds, commentArrays });
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
   // Add a downvote to a question
   router.route('/:aid/:userId/downvote').post(async (req, res) => {
 

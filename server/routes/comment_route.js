@@ -57,6 +57,19 @@ router.route('/:comment_id/username').get((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/:cids/delete').post(async (req, res) => {
+    try {
+      const commentIds = req.params.cids.split(',');
+  
+      // Find and delete multiple comments by their IDs
+      const deletedComments = await Comment.deleteMany({ _id: { $in: commentIds } });
+  
+      res.json(deletedComments);
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
 
 module.exports = router;
 

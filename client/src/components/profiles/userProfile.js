@@ -22,11 +22,11 @@ class UserProfile extends Component {
           }
       }
   render() {
-    const { user } = this.props;
+    const { user, onChangeQuestion, onDeleteQuestion } = this.props;
     const membershipDuration = user ? memSince(user.member_since) : '--';
     console.log(this.state.Names);
     return (
-<div>
+    <div>
         <h2>User Profile</h2>
         <p>
         <strong style={{ fontSize: '1.2em'}}>User Information</strong> <br />
@@ -38,12 +38,16 @@ class UserProfile extends Component {
           {this.state.Names && (
             <ul style={{ listStyle: 'none', padding: 0 }}>
               {this.state.Names.map((question, index) => (
-                <li key={index}>
-                  <a href={`/questions/${question._id}`}>{question.title}</a>
+                <li key={index} >
+                  <span style={{ display: 'block'}}>{question.title}</span>
+                  <div style={{ marginBottom: '10px' }}>
+                    <button onClick={() => onDeleteQuestion(question)}>Delete</button>
+                    <button onClick={() => onChangeQuestion(question)}>Modify</button>
+                  </div>
                 </li>
               ))}
             </ul>
-          )}
+          )} 
 
         </p>
       </div>
