@@ -132,6 +132,7 @@ export default class AnswerPage extends Component {
         const vote = await axios.post(`http://localhost:8000/answers/${aid}/${userId}/downvote`);
         const voteMessage = vote.data.message;
         const response = await axios.post(`http://localhost:8000/users/${askedBy}/${voteMessage}`);
+        console.log(response);
       } catch (error) {
         console.error('Error:', error);
       }

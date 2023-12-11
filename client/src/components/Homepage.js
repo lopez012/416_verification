@@ -11,6 +11,7 @@ import TagPageHeader from './TagPage/tagPageHeader.js'
 import '../stylesheets/App.css'
 import SearchHeader from './Search/SearchHeader';
 import axios from 'axios';
+import UserProfile from './profiles/userProfile.js';
 
 class Homepage extends Component {
   constructor() {
@@ -35,6 +36,7 @@ class Homepage extends Component {
       current_page:0,
       question_per_page:5,
       currUser: null,
+      showUserProfile: false, 
     };
     this.model = new Model();
     this.handlehomepage = this.handlehomepage.bind(this);
@@ -83,7 +85,8 @@ class Homepage extends Component {
       displayquestions:true,
       tagclicked:false,
       initSearch : false,
-      page_controls:true
+      page_controls:true,
+      showUserProfile:false,
     })
 
   }
@@ -97,7 +100,8 @@ class Homepage extends Component {
       showAnswer:false,
       displayquestions:false,
       initSearch: false,
-      page_controls:false
+      page_controls:false,
+      showUserProfile: false,
     })
   }
   handletagclick(questionsoftag){
@@ -106,7 +110,8 @@ class Homepage extends Component {
       tagQuestions:questionsoftag,
       tagpage:false,
       displayquestions:true,
-      initSearch :false
+      initSearch :false, 
+      showUserProfile:false,
     })
   }
   sortbynewest(question_list){
@@ -223,7 +228,17 @@ class Homepage extends Component {
     }
   };
 
-
+  handleUserProfile = () => {
+    this.setState({
+      showUserProfile: true,
+      displayQuestionForm: false,
+      displayQuestionHeader: false,
+      displaySearchHeader:false, 
+      tagpage:false,
+      displayquestions:false,
+      page_controls: false,
+    });
+  };
   
 
   renderQuestions() {
@@ -283,7 +298,8 @@ class Homepage extends Component {
       displaySearchHeader : false,
       initSearch : false,
       tagpage:false,
-      page_controls:false
+      page_controls:false,
+      showUserProfile:false,
     }));
   };
 
@@ -301,7 +317,8 @@ class Homepage extends Component {
           displayQuestionHeader: false,
           initSearch: false,
           displaySearchHeader: false,
-          page_controls:false
+          page_controls:false,
+          showUserProfile: false,
         });
       } catch (error) {
         console.error('Error updating view count:', error);
@@ -521,7 +538,12 @@ class Homepage extends Component {
       <div>
       <div className="homepage">
         <Header onSearch={this.handleSearch} logout ={this.props.logout} user= {this.props.user} />
-        {user && (<h1>Welcome {user.username} !</h1>)}
+        {user && (
+          <div>
+            <h1>Welcome {user.username}!</h1>
+            <button onClick={this.handleUserProfile}>Go to Profile</button>
+          </div>
+        )}
         {this.state.displayQuestionHeader && (
             <QuestionsHeader
               totalQuestions={this.state.questions.length}
@@ -579,6 +601,13 @@ class Homepage extends Component {
         <button onClick={this.next_page}>Next</button>
         </div>
         )}
+        {this.state.showUserProfile && (
+          <UserProfile
+          user = {this.props.user}
+          />
+        )
+
+        }
 
         </div>
 

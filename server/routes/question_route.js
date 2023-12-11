@@ -137,6 +137,25 @@ router.route('/:id/answers').get(async (req, res) => {
     }
   });
   
+
+  router.route('/:userId/names').get(async (req, res) => {
+    try {
+      const userId = req.params.userId;
+  
+      // Find questions where askedBy is equal to userId and project only the title
+      const questions = await Question.find({ askedBy: userId });
+  
+      // Extract titles from the result
+      
+  
+      res.json({ questions });
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
+
   // Add a downvote to a question
   router.route('/:qid/:userId/downvote').post(async (req, res) => {
 
