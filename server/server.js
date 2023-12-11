@@ -42,6 +42,7 @@ const answerRouter = require('./routes/answer_route');
 const tagRouter = require('./routes/tag_route');
 const questionRouter = require('./routes/question_route.js');
 const userRouter = require('./routes/users_route.js');
+const commentRouter = require('./routes/comment_route.js');
 
 app.use(session({
     secret: "very secret string",
@@ -61,7 +62,7 @@ app.use('/answers', answerRouter);
 app.use('/tags', tagRouter);
 app.use('/questions',questionRouter);
 app.use('/users',userRouter);
-
+app.use('/comments',commentRouter);
 
 
 

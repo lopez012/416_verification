@@ -8,6 +8,7 @@ var AnswerSchema = new Schema({
     ans_date_time:{type:Date , default:Date.now},
     upvotes: { type: [{ type: Schema.Types.ObjectId, ref: 'User' }], default: [] },  
     downvotes: { type: [{ type: Schema.Types.ObjectId, ref: 'User' }], default: [] },
+    comments:{ type: [{ type: Schema.Types.ObjectId, ref: 'Comment' }], default: [] },
 });
 
 AnswerSchema.virtual('url').get(function() {

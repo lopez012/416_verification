@@ -32,10 +32,16 @@ router.route('/question/:id').get((req,res)=>{
     Question.findById(req.params.id)
         .populate({
             path: 'answers', 
-            populate: {
-                path: 'ans_by', 
-                model: 'User' 
-            }
+            populate: [
+              {
+                  path: 'ans_by',
+                  model: 'User' 
+              },
+              {
+                  path: 'comments', 
+                  model: 'Comment' 
+              }
+          ]
         })
         .then( question=>{
             if(!question){
