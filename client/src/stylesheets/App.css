@@ -17,7 +17,7 @@ body{
   .right_content{
   
     position: absolute;
-    top:50%;
+    top:30%;
     left:14.8%;
     width:75%;
     padding: 20px; 
@@ -166,7 +166,7 @@ body{
       justify-content:space-between;
       align-items: center;
       padding: 10px;
-      margin-bottom: 70px;
+      margin-bottom: 0px;
   
     }
     .anspage_question_data{
@@ -174,7 +174,7 @@ body{
       justify-content: center;
       align-items: center;
       padding: 10px;
-      border-bottom: dotted;
+      
     }
     .answer_div{
       border-bottom: dotted;
@@ -196,9 +196,11 @@ body{
       border-radius: 0%;
       padding-top: 8px;
       padding-bottom: 8px;
-      position: absolute;
-      right: 50px;
+      display: inline-block;
+      right: 0px;
       cursor: pointer;
+      position: absolute;
+      
   
    }
   
@@ -269,7 +271,7 @@ body{
     border-radius: 0%;
     padding-top: 8px;
     padding-bottom: 8px;
-    position: absolute;
+  
     right: 50px;
     cursor: pointer;
    }
@@ -306,6 +308,7 @@ body{
    }
   #q_tag_container{
     display: flex;
+    
    
   }
   .q_tag{
@@ -411,7 +414,6 @@ body{
     position: absolute;
     right: 5px;
     bottom: 0px;
-    
   }
   .question-list{
     overflow-y: auto;
@@ -438,6 +440,7 @@ body{
     margin-bottom: 30px;
     margin-left: 100px;
     border-color: lightgrey;
+    font-size: 14px;
   }
   .comment_text{
     flex: 1 1 0;
@@ -448,6 +451,13 @@ body{
   }
   .commented-by{
     color: blue;
+  }
+  .Page_controls2{
+    float: right;
+  }
+  .answer_container{
+    overflow-y: auto;
+    max-height: 500px;
   }
 
    

@@ -12,7 +12,11 @@ export default class QuestionInfo extends Component {
       comment_box:false,
       comment_text: '',
       comment_text_error: '',
-      comment_submitted: 0
+      comment_submitted: 0,
+
+      page_controls:true,
+      current_page:0,
+      comments_per_page:3,
       
     };
    
@@ -39,13 +43,22 @@ export default class QuestionInfo extends Component {
   comment_submitted(event){
     this.setState((prevstate)=> ({comment_submitted: prevstate.comment_submitted+1}))
   }
-  /*
-  componentDidUpdate(prevState) {
-    if (this.comment_submitted !== prevState.comment_submitted) {
-      this.getanswers();
-    }
-  }
-  */
+  total_pages = () =>{
+    return Math.ceil(this.props.question.comments.length/this.state.comments_per_page);
+  };
+
+  next_page = ()=>{
+    this.setState(prevState =>({
+      current_page: (prevState.current_page +1)% this.total_pages()
+
+    }));
+  };
+  prev_page =()=>{
+    this.setState(prevState=>({
+      current_page: prevState.current_page===0?0: prevState.current_page-1
+    }));
+  };
+
 
 
   handleCommentClick() {
@@ -99,11 +112,21 @@ handleSubmitForm(event){
     }else{
       this.setState({comment_text_error});
     }
+  
   }
 
   render_comments_for_question(comments){
-    return comments.map(comment => (
-        <Comment 
+    const sorted_c = comments.sort((a, b) => {
+        const A = new Date(a.comment_time);
+        const B = new Date(b.comment_time);
+      return B - A;
+    });
+
+    const start_ind = this.state.current_page * this.state.comments_per_page;
+    const comments_on_q_page = sorted_c.slice(start_ind, start_ind+this.state.comments_per_page);
+
+    const c_comp = comments_on_q_page.map((comment) => (
+      <Comment 
         key={comment._id}
         onUpVote = {this.props.onUpVote}
         onDownVote = {this.props.onDownVote}
@@ -113,7 +136,23 @@ handleSubmitForm(event){
         //comment_submitted = {this.props.comment_submitted}
         />
        ));
+       return (
+        <div>
+          <div className="comment-list">
+            {c_comp}
+          </div>
+          {this.state.page_controls && comments.length>3&&(
+        <div className="Page_controls2">
+        <button onClick={this.prev_page} disabled={this.state.current_page === 0}>Prev</button>
+        <button onClick={this.next_page}>Next</button>
+        </div>
+        )}
+           
+        </div>
+      );
   }
+
+  
 
 
 
@@ -139,7 +178,18 @@ handleSubmitForm(event){
             <div>asked {FormatDate(this.props.question.askDate)}</div>
           </div>
        </div>
+       <div id="q_tag_container">
+            {this.props.question.tags.map((tags) => (
+         <span key={tags._id} className="q_tag">
+            {tags.name}
+          </span>
+          ))}
+          </div>
+       <h5>Question Comments</h5>
        {this.render_comments_for_question(this.props.question.comments)}
+       
+       
+
        {this.props.user &&
         (<button className='comment-button' onClick={this.handleCommentClick}>Add Comment</button>
         )}
