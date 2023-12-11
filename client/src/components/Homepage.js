@@ -114,9 +114,14 @@ class Homepage extends Component {
       showUserProfile:false,
     })
   }
-  sortbynewest(question_list){
-    return question_list.sort((q1,q2)=>q2.askDate-q1.askDate);
+  sortbynewest(question_list) {
+    return question_list.sort((q1, q2) => {
+        const date1 = new Date(q1.askDate);
+        const date2 = new Date(q2.askDate);
+        return date2 - date1;
+    });
   }
+
   getlatestanswerdate(question){
     if(question.answers.length===0){
       return new Date(0);
@@ -157,7 +162,6 @@ class Homepage extends Component {
 
 
     }));
-
   };
   handleUpVote = async (qid) => {
     const { user } = this.props;    
@@ -265,7 +269,7 @@ class Homepage extends Component {
         questions = this.sortbynewest(this.state.questions);
     }
     const start_ind = this.state.current_page * this.state.question_per_page;
-    const questions_on_page = this.state.questions.slice(start_ind, start_ind+this.state.question_per_page)
+    const questions_on_page = questions.slice(start_ind, start_ind+this.state.question_per_page)
 
     const questions_on_page_comp = questions_on_page.map((question) => (
       <Question
@@ -595,7 +599,7 @@ class Homepage extends Component {
             <TagPage onTagclick= {this.handletagclick}  />
             </>
           )}
-        {this.state.page_controls &&(
+        {this.state.page_controls && this.state.questions.length>5&&(
         <div className="Page_controls">
         <button onClick={this.prev_page} disabled={this.state.current_page === 0}>Prev</button>
         <button onClick={this.next_page}>Next</button>

@@ -60,17 +60,14 @@ class Question extends Component {
             </p>
             <p className='summary'>{question.summary}</p>
 
-
-
-
             <div id="q_tag_container">
             {this.props.question.tags.map((tags) => (
          <span key={tags._id} className="q_tag">
             {tags.name}
           </span>
           ))}
-</div>
-          </div>  
+          </div>
+      </div>  
           <div className="right_q">
             <div style={{ color: 'red' }}>{askedByUsername}</div>
             <div>asked {formattedDate}</div>

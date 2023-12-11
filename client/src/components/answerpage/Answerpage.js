@@ -163,9 +163,10 @@ export default class AnswerPage extends Component {
     question={this.state.question}
     user = {this.props.user}
     refreshQuestionData = {this.refreshQuestionData}
-
     />
+    
     <h1>Answers</h1>
+    <div className='answer-list'>
     <Answers
       questionid={this.props.question._id}
       user ={this.props.user}
@@ -174,6 +175,7 @@ export default class AnswerPage extends Component {
       comment_submitted = {this.comment_submitted}
       //model={this.props.model}
     />
+    </div>
     {this.props.user &&
     (<AnswerQuestionButton toggleForm={this.toggle_answer_form} />)}
   </div>
