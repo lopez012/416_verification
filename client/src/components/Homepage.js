@@ -40,6 +40,7 @@ class Homepage extends Component {
     this.handlehomepage = this.handlehomepage.bind(this);
     this.handletagpage = this.handletagpage.bind(this);   
     this.handletagclick = this.handletagclick.bind(this);
+   // this.refreshQuestionData = this.refreshQuestionData.bind(this);
     
   }
   async componentDidMount() {
@@ -70,6 +71,7 @@ class Homepage extends Component {
       }
     }
   }
+ 
   handlehomepage(event){
     this.setState({
       displayQuestionForm:false,
@@ -556,6 +558,7 @@ class Homepage extends Component {
                 //model={this.model}
                 onAskQuestion={this.toggleQuestionForm}
                 user ={this.state.currUser}
+               
               />
             )
           : this.state.displayquestions?
