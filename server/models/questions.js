@@ -13,6 +13,7 @@ var QuestionSchema = new Schema({
     views: { type: Number, default: 0 },
     upvotes: { type: [{ type: Schema.Types.ObjectId, ref: 'User' }], default: [] },  
     downvotes: { type: [{ type: Schema.Types.ObjectId, ref: 'User' }], default: [] },  
+    comments:{ type: [{ type: Schema.Types.ObjectId, ref: 'Comment' }], default: [] },  
 });
 
 QuestionSchema.virtual('url').get(function () {

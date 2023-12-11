@@ -421,6 +421,35 @@ body{
     margin-left: 20px;
     color: grey;
   }
+  .comment-button{
+    background-color: transparent;
+    border-style: none;
+    border-color: white;
+    cursor: pointer;
+    color: grey;
+
+  }
+  #comment_text_error{
+    color: red;
+  }
+  .comment_div{
+    border-bottom: solid;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 100px;
+    border-color: lightgrey;
+  }
+  .comment_text{
+    flex: 1 1 0;
+    margin: 0px 20px;
+  }
+  .comment_metadata{
+    text-align: right;
+  }
+  .commented-by{
+    color: blue;
+  }
+
    
   
   

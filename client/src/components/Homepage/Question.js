@@ -34,15 +34,18 @@ class Question extends Component {
             <div style={{ color: 'grey' }}>{question.views} views</div>
           </div>
           {/* upvote button*/}
+          <div>
           <button onClick={() => onUpVote(question._id)}
-           style={{ display: 'inline-block', verticalAlign: 'middle' }}>
+           style={{ display: 'block', verticalAlign: 'middle' }}>
                ▲
               </button>
+               {/* Vote Count Display */}
+          <span style={{ marginLeft: '5px' }}> {question.upvotes.length - question.downvotes.length}</span>
           {/* Downvote Button */}
           <button onClick={() => onDownVote(question._id)}
-           style= {{display: 'inline-block', verticalAlign: 'middle'}}>▼</button>
-              {/* Vote Count Display */}
-          <span style={{ marginLeft: '5px' }}> {question.upvotes.length - question.downvotes.length}</span>
+           style= {{display: 'block', verticalAlign: 'middle'}}>▼</button>
+           </div>
+             
           <div></div>
           <div className="middle_q">
             <p style={{ margin: '0px 20px', fontSize: '20px' }}>

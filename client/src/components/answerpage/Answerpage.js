@@ -11,12 +11,18 @@ export default class AnswerPage extends Component {
     
       this.state = {
         toggle_answer_form:false,
+        
       }
-      this.toggle_answer_form = this.toggle_answer_form.bind(this)
+      this.toggle_answer_form = this.toggle_answer_form.bind(this);
+      
+      
     }
     toggle_answer_form(event){
         this.setState((prevstate) =>({toggle_answer_form: !prevstate.toggle_answer_form}))
     }
+    
+    
+
     handleUpVote = async (qid) => {
       const { user } = this.props;
       
@@ -87,6 +93,7 @@ export default class AnswerPage extends Component {
       user ={this.props.user}
       onUpVote = {this.handleUpVote01}
       onDownVote = {this.handleDownvote01}
+      comment_submitted = {this.comment_submitted}
       //model={this.props.model}
     />
     {this.props.user &&
