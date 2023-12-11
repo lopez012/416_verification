@@ -5,7 +5,7 @@ const Question = require('../models/questions');
 // Get all questions
 router.route('/all').get(async (req, res) => {
   try {
-    const questions = await Question.find().populate('tags').populate('answers');
+    const questions = await Question.find().populate('tags').populate('answers').populate('comments');
     res.json(questions);
   } catch (err) {
     res.status(400).json('Error: ' + err);
@@ -37,7 +37,7 @@ router.get('/all', async (req, res) => {
 // Get a question by ID
 router.route('/:id').get(async (req, res) => {
   try {
-    const question = await Question.findById(req.params.id).populate('tags').populate('answers');
+    const question = await Question.findById(req.params.id).populate('tags').populate('answers').populate('comments');
     if (!question) {
       res.status(404).json({ error: 'Question not found' });
     } else {

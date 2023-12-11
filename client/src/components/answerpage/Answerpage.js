@@ -11,16 +11,29 @@ export default class AnswerPage extends Component {
     
       this.state = {
         toggle_answer_form:false,
+        question: this.props.question,
         
       }
       this.toggle_answer_form = this.toggle_answer_form.bind(this);
-      
+      this.refreshQuestionData = this.refreshQuestionData.bind(this);
       
     }
     toggle_answer_form(event){
         this.setState((prevstate) =>({toggle_answer_form: !prevstate.toggle_answer_form}))
     }
-    
+    async refreshQuestionData(){
+      try {
+        const response = await axios.get(`http://localhost:8000/questions/${this.props.question._id}`); 
+        const question = response.data;
+        this.setState({ question });
+        //let count = questions.length;
+        //this.setState({question_count: count})
+        //console.log(count);
+      } catch (error) {
+        console.error('Error fetching questions:', error);
+      }
+  
+    }
     
 
     handleUpVote = async (qid) => {
@@ -145,7 +158,13 @@ export default class AnswerPage extends Component {
     onDownVote = {this.handleDownvote}
     user ={this.props.user}
     />
-    <QuestionInfo question={this.props.question} />
+    <QuestionInfo 
+    question={this.state.question}
+    user = {this.props.user}
+    refreshQuestionData = {this.refreshQuestionData}
+
+    />
+    <h1>Answers</h1>
     <Answers
       questionid={this.props.question._id}
       user ={this.props.user}
