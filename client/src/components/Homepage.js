@@ -39,6 +39,7 @@ class Homepage extends Component {
       showUserProfile: false, 
       changeForm: false,
       questionToPass: null,
+      tagString : null,
     };
     this.model = new Model();
     this.handlehomepage = this.handlehomepage.bind(this);
@@ -198,6 +199,8 @@ class Homepage extends Component {
       alert('You need 50 or more reputation to upvote.');
     }
   };
+
+
 
   handleDownvote = async (qid) => {
     const {  user } = this.props;
@@ -480,13 +483,22 @@ class Homepage extends Component {
 
 
   handleQuestionChange = async (question) => {
-    console.log(question);
-    this.setState({
-      displayQuestionForm: true,
-      showUserProfile: false,
-      changeForm: true,
-      questionToPass : question,
-    });
+    try {
+      console.log(question.tags);
+      const response = await axios.get(`http://localhost:8000/tags/tagNames/${question.tags.join(',')}`);
+      const tagString = response.data; 
+      console.log('Tag String:', tagString);
+      this.setState({
+        displayQuestionForm: true,
+        showUserProfile: false,
+        changeForm: true,
+        questionToPass: question,
+        tagString: tagString,
+      });
+    } catch (error) {
+      console.error('Error fetching tag names:', error);
+      // Handle error if needed
+    }
   }
   handleDeleteQuestion = async (question) => {
     const response = await axios.post(`http://localhost:8000/questions/${question._id}/delete`);
@@ -515,6 +527,41 @@ class Homepage extends Component {
 
     });
   }
+  handleQuestionMod = async (question, formData) => {
+    const title = formData.questionTitle;
+    const text = formData.questionText;
+    const Tags = formData.tags;
+    const tags = Tags.trim().split(/\s+/).slice(0, 5);
+    const summary = formData.summary;
+    const id = question._id;
+    const response = await axios.post('http://localhost:8000/questions/modify', {
+      id,
+      title,
+      text,   
+      summary,
+    });
+    console.log(tags);
+    const response01 = await axios.post('http://localhost:8000/questions/tagmodify', {
+      id,
+      tags
+    });
+    this.fetchQuestions();
+
+    this.setState({
+      displayQuestionForm: false,
+      displayQuestionHeader: true,
+      showAnswer: false,
+      viewedQuestion: null,
+      displaySearchHeader: false,
+      displayquestions: true,
+      page_controls:true,
+      changeForm: false,
+
+    });
+
+  }
+
+
   handleQuestionSubmit = async (formData) => {
     console.log('Question submitted:', formData);
     const title = formData.questionTitle;
@@ -628,8 +675,11 @@ class Homepage extends Component {
           ? (<QuestionForm
              onQuestionSubmit={this.handleQuestionSubmit}
               user={this.state.currUser}
-              passedQuesetion={this.state.questionToPass}
-              change = {this.state.changeForm} />
+              passedQuestion={this.state.questionToPass}
+              change = {this.state.changeForm}
+              onDeleteQuestion={this.handleDeleteQuestion}
+              ts = {this.state.tagString}
+              onChangeQuestion = {this.handleQuestionMod} />
           ) : this.state.showAnswer? (
              <AnswerPage
                 question={this.state.viewedQuestion}

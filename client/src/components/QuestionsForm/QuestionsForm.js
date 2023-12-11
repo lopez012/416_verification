@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 
-function QuestionForm({ onQuestionSubmit,user}) {
+function QuestionForm({ onQuestionSubmit,user,passedQuestion,change,onDeleteQuestion, ts, onChangeQuestion}) {
+
+  
   const [formData, setFormData] = useState({
-    questionTitle: '',
-    questionText: '',
-    tags: '',
-    summary: '',
+    questionTitle: change? passedQuestion.title : '',
+    questionText: change? passedQuestion.text : '',
+    tags: change? ts: '0',
+    summary: change? passedQuestion.summary : '',
   });
 
   const [errors, setErrors] = useState({
@@ -23,7 +25,6 @@ function QuestionForm({ onQuestionSubmit,user}) {
 
 
   const handleSubmit = (e) => {
-    
     e.preventDefault();
     let hasErrors = false;
     const newErrors = { ...errors };
@@ -92,7 +93,13 @@ function QuestionForm({ onQuestionSubmit,user}) {
       console.log('error in q form');
     } else {
       console.log(formData.summary);
-      onQuestionSubmit(formData);
+      if(change){
+        onChangeQuestion(passedQuestion,formData)
+      }
+      else {
+        onQuestionSubmit(formData);
+      }
+    
       // Clear the form and reset errors
       setFormData({
         questionTitle: '',
@@ -107,6 +114,9 @@ function QuestionForm({ onQuestionSubmit,user}) {
         summary: '',
       });
     }
+  };
+  const handleDelete = () => {
+    onDeleteQuestion(passedQuestion);
   };
 
   return (
@@ -174,9 +184,16 @@ function QuestionForm({ onQuestionSubmit,user}) {
         
       
         <br />
-        <br />
-        <button type="submit">Post Question</button>
-        <span style={{ color: 'red' }}> *indicates mandatory fields</span>
+      <br />
+      <button type="submit">{change ? 'Modify' : 'Post Question'}</button>
+      {change && (
+        <>
+          <button type="button" onClick={handleDelete} style={{ marginLeft: '10px', color: 'red' }}>
+            Delete
+          </button>
+        </>
+      )}
+      <span style={{ color: 'red' }}> *indicates mandatory fields</span>
       </form>
     </div>
   );

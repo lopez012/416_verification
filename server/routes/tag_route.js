@@ -62,5 +62,24 @@ router.route('/:id').get((req,res)=>{
 
 });
 
+router.route('/tagNames/:tagids').get(async (req, res) => {
+  try {
+    const tagIds = req.params.tagids.split(',');
+
+    // Find tags by IDs
+    const tags = await Tag.find({ _id: { $in: tagIds } });
+
+    // Extract tag names
+    const tagNames = tags.map(tag => tag.name);
+
+    // Concatenate tag names with a space separator
+    const result = tagNames.join(' ');
+
+    res.send(result);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 module.exports = router;
