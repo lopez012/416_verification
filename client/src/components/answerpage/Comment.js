@@ -8,6 +8,9 @@ export default class Comment extends Component {
         super(props);
         this.state = {
             username: '',
+            comment_text: props.comment.text,
+            comment_votes:props.comment.upvotes,
+            hasUpvoted: false,
         };
     }
     componentDidMount() {
@@ -22,6 +25,19 @@ export default class Comment extends Component {
             console.error(error);
         }
     }
+    handleCommentUpVote = async (comment_id) => {
+      if (!this.state.hasUpvoted) {
+        this.setState(prevState => ({
+            hasUpvoted: true,
+            comment_votes: prevState.comment_votes + 1,
+        }));
+        try {
+            await axios.post(`http://localhost:8000/comments/upvote/${comment_id}`);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+      }
+    };
     
 
 
@@ -29,7 +45,18 @@ export default class Comment extends Component {
 
   render() {
     return (
-      <div className='comment_div'>  
+      <div className='comment_div'>
+      
+        {/* Vote Section (Upvote, Downvote, Vote Count) */}
+        <div className='vote-section'>
+          {/* Upvote button */}
+          <button disabled={this.state.hasUpvoted} onClick={() => this.handleCommentUpVote(this.props.comment._id)} style={{ display: 'inline-block', verticalAlign: 'middle', marginRight:'20px' }}>
+            ▲
+          </button>
+          {/* Vote Count Display */}
+          <span style={{ marginLeft: '12px', display: 'block' }}>{this.state.comment_votes}</span>  
+        
+     
         <div className='comment_text'>
         {this.props.comment.text}
         </div>
@@ -37,6 +64,7 @@ export default class Comment extends Component {
           <div className='commented-by'>{this.state.username}</div>
           commented {FormatDate(this.props.comment.comment_time)}
         </div>
+      </div>
       </div>
     )
   }
