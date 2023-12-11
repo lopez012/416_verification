@@ -491,11 +491,15 @@ class Homepage extends Component {
   handleDeleteQuestion = async (question) => {
     const response = await axios.post(`http://localhost:8000/questions/${question._id}/delete`);
     console.log(response.data);
+    if (response.data.answerIds.length > 0) {
     const responsed = await axios.post(`http://localhost:8000/answers/${response.data.answerIds}/delete`);
     const combinedCommentArray = response.data.commentIds.concat(responsed.data.commentArrays);
-
+    
     console.log(combinedCommentArray); 
-    const respons = await axios.post(`http://localhost:8000/comments/${combinedCommentArray}/delete`);
+    if (combinedCommentArray.length > 0) {
+      const respons = await axios.post(`http://localhost:8000/comments/${combinedCommentArray}/delete`);
+    }
+    }
     this.fetchQuestions();
     alert("Question deleted!");
 
