@@ -2,6 +2,9 @@
 // ************** DEFINE YOUR REACT COMPONENTS in ./components directory **************
 import './stylesheets/App.css';
 import FakeStackOverflow from './components/fakestackoverflow.js'
+import AnswerForm from './components/answerpage/answerForm.js'
+
+
 
 function App() {
   return (

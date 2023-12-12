@@ -1,1 +1,472 @@
 /* Add your CSS here */
+body{
+    border-top: solid;  
+    border-right: solid;
+    border-left: solid;
+  }
+  .menubar{
+      float:left;
+      
+      width: 15%;
+      height: 100%;
+      color: black;
+      align-items: center;
+      
+      
+  }
+  .right_content{
+  
+    position: absolute;
+    top:30%;
+    left:14.8%;
+    width:75%;
+    padding: 20px; 
+    border-left: dashed;
+  
+  }
+  #questions_button{
+      position: relative;
+  
+      left: 40px;
+      padding:10px; 
+      margin-top: 150px;
+      margin-bottom:40px;
+      text-align: center;
+      color: blue;
+      background-color: white;
+      border:none;
+      cursor: pointer;
+      font-size: 20px;
+  }
+  #questions_button.gray_button{
+    background-color: rgb(130, 141, 152);
+ }
+ #tags_button.gray_button{
+  background-color: rgb(128, 139, 150);
+
+ }
+  #tags_button{
+      position:relative;
+      
+      left:50px;
+      margin-top: 80px;
+      padding:10px;
+      text-align: center;
+      color:blue;
+      background-color: white;
+      border:none;
+      cursor: pointer;
+      font-size: 20px;
+  
+  }
+  #questions_header{
+      width: 85%;
+      position: absolute;
+
+      top: 23%;
+      height: 0%;
+      
+      right:0px;
+     
+      
+      
+      
+  
+  }
+  
+  #ask_question {
+      background-color:cornflowerblue;
+      color:white;
+      border-radius: 0%;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      position: absolute;
+      right: 20px;
+      cursor: pointer;
+  }
+  .title {
+      display: inline-block; 
+      font-size: 35px; 
+      font-weight:bold;
+      margin-left: 550px;
+  }
+  .title div {
+      margin-bottom: 0;
+  }
+  
+  #newest_button{
+     
+    
+      border-radius: 0%;
+      margin-right: 0px;
+      cursor: pointer;
+      
+  }
+  #active_button{
+      display: inline-block;
+      
+      border-radius: 0%;
+      margin-left: 0px;
+      cursor: pointer;
+      
+  }
+  #unanswered_button{
+      
+      border-radius: 0%;
+      cursor: pointer;
+  
+  }
+  #num_questions{
+      margin-left: 20px;
+      margin-top: 40px;
+      font-size: 20px;
+  }
+  #search_bar {
+      width: 250px;
+      padding: 5px;
+      border: solid;
+      border-radius: 5px;
+      font-size: 15px;
+  }
+  .question h2 {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    
+  h1 {
+      margin-bottom: 0; 
+      margin-right: 10px;
+    }
+  #header {
+      background-color: grey; 
+      color: Black; 
+      padding: 20px; 
+      display: flex;
+      justify-content: space-between;
+      text-align: center; 
+      border-bottom: solid;
+  }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    #success_message {
+      color: green;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    #success_message {
+      color: green;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    
+    .answer_page_header{
+  
+      justify-content:space-between;
+      align-items: center;
+      padding: 10px;
+      margin-bottom: 0px;
+  
+    }
+    .anspage_question_data{
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      
+    }
+    .answer_div{
+      border-bottom: dotted;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+    .answer_text{
+      flex: 1 1 0;
+      margin: 0px 20px;
+    }
+    .answer_metadata{
+      text-align: right;
+    }
+    
+  
+   .askq2{
+      background-color:cornflowerblue;
+      color:white;
+      border-radius: 0%;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      display: inline-block;
+      right: 0px;
+      cursor: pointer;
+      position: absolute;
+      
+  
+   }
+  
+   .TagsPage{
+      width:100%;
+      height:100%;
+      margin-top: 0px;
+      margin-left:40px;
+      display: inline-block;
+  
+   }
+   .TagsPageHeader{
+      
+      align-items: center;
+   }
+   .numoftags{
+    position: absolute;
+    top:0%;
+    
+   }
+   .alltags{
+    position: absolute;
+    left: 50%;
+    top:15%;
+    
+   }
+   .tagsq{
+    position: absolute;
+    top:15%;
+    right:5%;
+    background-color:cornflowerblue;
+    color:white;
+    border-radius: 0%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    cursor: pointer;
+   }
+   .TagsContainer{
+    
+    position:absolute;
+    top:200%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    
+  
+   }
+   .tagbox{
+    margin:10px;
+    padding: 10px;
+    box-sizing:border-box;
+    flex: 0 0 31%;
+    border-style: dotted;
+   }
+   #add_question_form{
+    position: absolute;
+    left:20%;
+  
+   }
+   #question_title_answer_page{
+    display: inline-block;
+    margin-left: 40px;
+  
+   }
+   .answer_question_button{
+    background-color:cornflowerblue;
+    color:white;
+    border-radius: 0%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  
+    right: 50px;
+    cursor: pointer;
+   }
+  
+   .question{
+    border-bottom: dashed;
+    margin:10px;
+  
+   }
+   .question_container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding:28px;
+    top: 0px; 
+    position: relative;
+    
+  
+   }
+   .homepage {
+    position:relative;
+  }
+   .left_q{
+    flex: 1;
+   
+   }
+   .middle_q{
+    flex: 5;
+   }
+   .right_q{
+    flex: 1;
+   
+   }
+  #q_tag_container{
+    display: flex;
+    
+   
+  }
+  .q_tag{
+    border: solid black;
+    margin-top: 4px;
+    margin-left: 6px;
+    margin-right: 6px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    color: white;
+    background-color: dimgray;
+  }
+  .bold{
+    font-weight: bold;
+  }
+  .answer_username{
+    text-align:center;
+    font-size:30px
+  }
+  .mandatory{
+    color:red;
+   }
+  .asked-by{
+    color: green;
+  }
+  .answer_text_box{
+    height:300px; 
+    width:400px;
+  }
+  .anspage_q_text{
+    flex:1 1 0; 
+    margin: 0px 20px
+  }
+  .tagname{
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+    
+  }
+  .Welcome{
+    color: blue;
+    text-align: center;
+    font-size: 35px;
+  }
+  .center{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .register_button{
+    margin: 10px;
+    font-size: 20px;
+    color: white;
+    background-color: dodgerblue;
+    border-color: dodgerblue;
+    border-radius: 12px;
+    cursor: pointer;
+    
+  }
+  .login_button{
+    margin: 10px;
+    font-size: 20px;
+    color: dodgerblue;
+    background-color: white;
+    border-color: dodgerblue;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  .guest_button{
+    margin: 10px;
+    font-size: 20px;
+    border-radius: 12px;
+    cursor: pointer;
+
+  }
+  .register_form{
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+  .login_form{
+    margin-top: 20px;
+    margin-left: 20px;
+  }
+  .submit_button{
+    margin: 10px;
+    color: white;
+    background-color: dodgerblue;
+    border-color: dodgerblue;
+    border-radius: 12px;
+    cursor: pointer;
+
+  }
+  .logout_button{
+    cursor: pointer;
+    font-size: large;
+
+  }
+  .Page_controls{
+    position: absolute;
+    right: 5px;
+    bottom: 0px;
+  }
+  .question-list{
+    overflow-y: auto;
+    max-height: 500px;
+  }
+  .summary{
+    margin-left: 20px;
+    color: grey;
+  }
+  .comment-button{
+    background-color: transparent;
+    border-style: none;
+    border-color: white;
+    cursor: pointer;
+    color: grey;
+
+  }
+  #comment_text_error{
+    color: red;
+  }
+  .comment_div{
+    border-bottom: solid;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: 100px;
+    border-color: lightgrey;
+    font-size: 14px;
+  }
+  .comment_text{
+    flex: 1 1 0;
+    margin-left:50px;
+  }
+  .comment_metadata{
+    text-align: right;
+  }
+  .commented-by{
+    color: blue;
+  }
+  .Page_controls2{
+    float: right;
+  }
+  .answer_container{
+    overflow-y: auto;
+    max-height: 500px;
+  }
+  .delete_button{
+    margin-left: 8px;
+  }
+  .username{
+    cursor: pointer;
+    color: blue;
+  }
+
+   
+  
+  
