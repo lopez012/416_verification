@@ -90,7 +90,7 @@ class WelcomePage extends Component {
 
   render() {
     if(this.state.Logged_In_User){ // Rendered for REGISTERED Users.
-      return <Homepage user={this.state.Logged_In_User} logout = {this.logout} />;
+      return <Homepage user={this.state.Logged_In_User} logout = {this.logout} set_logged_in_user={this.set_logged_in_user}  />;
     }
     if(this.state.toggle_login_form){
         return <LoginForm toggleHome = {this.showhomepage} set_logged_in_user={this.set_logged_in_user} /> 

@@ -9,6 +9,7 @@ Add design docs in *images/*
 5. run the server.js using node/nodemon.
 6. navigate to client directory.
 7. run npm start
+8. navigate to http://localhost:3000 if not automatically opened. 
 
 ## Team Member 1 Contribution
 Name: Brian Lopez Calle

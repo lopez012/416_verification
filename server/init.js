@@ -93,7 +93,8 @@ async function adminCreate(email,password){
     user = {
         email: email,
         hashed_password: hash,
-        role: "admin"
+        role: "admin",
+        reputation:999
       }
       let admin = new User(user);
       return admin.save();

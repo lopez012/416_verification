@@ -632,6 +632,7 @@ class Homepage extends Component {
   };
   render() {
     const { user } = this.props;
+
     
     //console.log("Logout prop in Homepage:", this.props.logout);
     return (
@@ -714,6 +715,7 @@ class Homepage extends Component {
           user = {this.props.user}
           onChangeQuestion={this.handleQuestionChange}
           onDeleteQuestion={this.handleDeleteQuestion}
+          set_logged_in_user={this.props.set_logged_in_user}
           />
         )
 
