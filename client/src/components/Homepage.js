@@ -412,6 +412,7 @@ class Homepage extends Component {
   }
   handleSearch = async (searchString) => {
     if(searchString.trim() === "") {
+      this.handleBackToQuestions();
      return;
     } 
     const searchWords = searchString.toLowerCase().split(/\s+/);
@@ -661,6 +662,7 @@ class Homepage extends Component {
   };
   render() {
     const { user } = this.props;
+
     
     //console.log("Logout prop in Homepage:", this.props.logout);
     return (
@@ -746,6 +748,7 @@ class Homepage extends Component {
           onDeleteQuestion={this.handleDeleteQuestion}
           onUserAnswers = {this.handleUserAnswersPage}
           onTagsPage = {this.handleUserTagsPage}
+          set_logged_in_user={this.props.set_logged_in_user}
           />
         )
 

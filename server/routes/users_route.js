@@ -1,6 +1,11 @@
 const bcrypt = require('bcrypt');
 const router =  require('express').Router();
 const User = require('../models/users');
+const Question = require('../models/questions');
+const Tag = require('../models/tags');
+const Comment = require('../models/tags');
+
+
 const saltRounds = 10;
 
 // Get all users
@@ -159,6 +164,30 @@ router.route('/:id/:vote').post(async (req, res) => {
   } catch (err) {
     console.error('Server error:', err);
     res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+router.route('/:id').delete(async (req, res) => {
+  const id = req.params.id;
+
+  try {
+      await User.deleteOne({ _id: id });  
+      const questions = await Question.find({ askedBy: id });
+
+        for (const question of questions) {
+          for (const tag of question.tags) {
+              await Tag.deleteOne({ _id: tag });
+            }
+        }
+        
+      await Question.deleteMany({ askedBy: id });
+      await Answer.deleteMany({ ans_by: id });
+      await Comment.deleteMany({ commented_by: id });
+    
+
+      res.json({ message: 'user deleted' });
+  } catch (err) {
+      console.error(err);
   }
 });
 
