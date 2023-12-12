@@ -382,6 +382,7 @@ class Homepage extends Component {
   }
   handleSearch = async (searchString) => {
     if(searchString.trim() === "") {
+      this.handleBackToQuestions();
      return;
     } 
     const searchWords = searchString.toLowerCase().split(/\s+/);
