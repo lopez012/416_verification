@@ -173,6 +173,7 @@ export default class AnswerPage extends Component {
       onUpVote = {this.handleUpVote01}
       onDownVote = {this.handleDownvote01}
       comment_submitted = {this.comment_submitted}
+      ansDeletion = {this.props.ansDelete}
       //model={this.props.model}
     />
     </div>

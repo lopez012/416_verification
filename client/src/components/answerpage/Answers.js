@@ -3,7 +3,7 @@ import FormatDate from '../Homepage/FormatDate';
 import axios from 'axios';
 import Answer from './answer'
 
-
+//ansDeletion
 export default class Answers extends Component {
   constructor(props){
     super(props);
@@ -95,6 +95,7 @@ export default class Answers extends Component {
      hyperLinks = {this.hyperLinks}
      user ={this.props.user}
      comment_submitted = {this.comment_submitted}
+     answerDeletion = {this.props.ansDeletion}
 
      />
     ));

@@ -40,6 +40,7 @@ class Homepage extends Component {
       changeForm: false,
       questionToPass: null,
       tagString : null,
+      answerDelete : false,
     };
     this.model = new Model();
     this.handlehomepage = this.handlehomepage.bind(this);
@@ -91,7 +92,8 @@ class Homepage extends Component {
       page_controls:true,
       showUserProfile:false,
       changeForm: false,
-
+      answerDelete:false,
+      
     })
 
   }
@@ -108,6 +110,8 @@ class Homepage extends Component {
       page_controls:false,
       showUserProfile: false,
       changeForm: false,
+      answerDelete : false,
+
     })
   }
   handletagclick(questionsoftag){
@@ -119,6 +123,8 @@ class Homepage extends Component {
       initSearch :false, 
       showUserProfile:false,
       changeForm: false,
+      answerDelete : false,
+
     })
   }
   sortbynewest(question_list) {
@@ -252,6 +258,8 @@ class Homepage extends Component {
       page_controls: false,
       changeForm: false,
       showAnswer: false,
+      answerDelete : false,
+
 
     });
   };
@@ -316,6 +324,8 @@ class Homepage extends Component {
       tagpage:false,
       page_controls:false,
       showUserProfile:false,
+      answerDelete : false,
+
     }));
   };
 
@@ -346,11 +356,14 @@ class Homepage extends Component {
 
 
   handleBackToQuestions = () => {
+    this.fetchQuestions();
     this.setState({
       viewedQuestion: null,
       showAnswer: false,
       initSearch : false,
-      page_controls:true
+      page_controls:true,
+      answerDelete : false,
+
     });
   }
   handlesortedbynewest = () => {
@@ -378,6 +391,23 @@ class Homepage extends Component {
       displayquestions:true
     },()=> {
       console.log('State after clicking Unanswered:', this.state);      
+    });
+  }
+  handleUserAnswersPage = async (questions1) => {
+    
+    this.setState({questions: questions1});
+    console.log("hello");
+
+    this.setState({
+      
+      displayQuestionHeader: true,
+      displayquestions:true,
+      tagQuestions:[],
+      page_controls:true,
+      current_page:0,
+      question_per_page:5,
+      showUserProfile: false,
+      answerDelete : false,
     });
   }
   handleSearch = async (searchString) => {
@@ -687,7 +717,8 @@ class Homepage extends Component {
                 //model={this.model}
                 onAskQuestion={this.toggleQuestionForm}
                 user ={this.state.currUser}
-               
+                ansDelete = {this.state.answerDelete}
+
               />
             )
           : this.state.displayquestions?
@@ -713,6 +744,8 @@ class Homepage extends Component {
           user = {this.props.user}
           onChangeQuestion={this.handleQuestionChange}
           onDeleteQuestion={this.handleDeleteQuestion}
+          onUserAnswers = {this.handleUserAnswersPage}
+          onTagsPage = {this.handleUserTagsPage}
           />
         )
 

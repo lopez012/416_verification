@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Question = require('../models/questions');
 const Tag = require('../models/tags');
+const Answer = require('../models/answers');
 
 // Get all questions
 router.route('/all').get(async (req, res) => {
@@ -157,6 +158,8 @@ router.route('/:id/answers').get(async (req, res) => {
     }
   });
 
+
+
   router.route('/:qid/:userId/upvote').post(async (req, res) => {
     console.log("hello");
     const { qid, userId } = req.params;
@@ -199,10 +202,8 @@ router.route('/:id/answers').get(async (req, res) => {
     try {
       const userId = req.params.userId;
   
-      // Find questions where askedBy is equal to userId and project only the title
+
       const questions = await Question.find({ askedBy: userId });
-  
-      // Extract titles from the result
       
   
       res.json({ questions });
@@ -211,6 +212,44 @@ router.route('/:id/answers').get(async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+
+  
+router.route('/:userId/getanswers').get(async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    // Find all questions
+    const allQuestions = await Question.find();
+
+    // Extract all unique answer IDs from all questions
+    const allAnswerIds = allQuestions.reduce((acc, question) => {
+      return acc.concat(question.answers.map(answer => answer.toString()));
+    }, []);
+
+    const uniqueAnswerIds = [...new Set(allAnswerIds)];
+
+    // Find answers where ans_by is equal to userId
+    const userAnswers = await Answer.find({
+      _id: { $in: uniqueAnswerIds },
+      ans_by: (userId)
+    });
+
+    // Get answer IDs where ans_by is equal to userId
+    const userAnswerIds = userAnswers.map(answer => answer._id.toString());
+
+    // Find questions where answers array contains userAnswerIds
+    const userQuestions = allQuestions.filter(question => {
+      return question.answers.some(answerId => userAnswerIds.includes(answerId.toString()));
+    });
+
+    // Return the array of questions
+    res.json({ questions: userQuestions });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 
 
   // Add a downvote to a question
