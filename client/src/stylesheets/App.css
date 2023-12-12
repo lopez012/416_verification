@@ -81,7 +81,7 @@ body{
       padding-top: 8px;
       padding-bottom: 8px;
       position: absolute;
-      right: 50px;
+      right: 20px;
       cursor: pointer;
   }
   .title {
@@ -458,6 +458,13 @@ body{
   .answer_container{
     overflow-y: auto;
     max-height: 500px;
+  }
+  .delete_button{
+    margin-left: 8px;
+  }
+  .username{
+    cursor: pointer;
+    color: blue;
   }
 
    
