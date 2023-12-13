@@ -5,7 +5,7 @@ Add design docs in *images/*
 1. start MongoDb as a background service
 2. install all dependencies.
 3. navigate to server directory.
-4. run the init.js script using node. takes two arguments for creation of admin user profile: username password 
+4. run the init.js script using node. takes two arguments for creation of admin user profile: username password (this is your login information)
 5. run the server.js using node/nodemon.
 6. navigate to client directory.
 7. run npm start
@@ -23,3 +23,7 @@ Use cases:
 7. New Answer
 
 ## Team Member 2 Contribution
+Name: Jeff Wu
+1. User profile 
+2. Upvotes (questions and answers)
+3. Admin Profile

@@ -105,26 +105,45 @@ class UserProfile extends Component {
       <h1>Admin-Info:</h1>
       <div>
       <p>
-        User Name: {user ? user.username : '--username--'} <br />
-        Member Since: {user ? FormatDate(user.member_since) : '--member_since--'} <br />
-        Member for {membershipDuration} <br />
-        Reputation: {user.reputation} <br />
-        <strong style={{ fontSize: '1.2em'}}>Questions User Asked</strong> <br />
-        {this.state.Names && (
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-            {this.state.Names.map((question, index) => (
-              <li key={index} >
-                <span style={{ display: 'block'}}>{question.title}</span>
-                <div style={{ marginBottom: '10px' }}>
-                  <button onClick={() => onDeleteQuestion(question)}>Delete</button>
-                  <button onClick={() => onChangeQuestion(question)}>Modify</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )} 
-      </p>
-    </div>
+            <strong style={{ fontSize: '1.2em' }}>User Information</strong> <br />
+            User Name: {user ? user.username : '--username--'} <br />
+            Member Since: {user ? FormatDate(user.member_since) : '--member_since--'} <br />
+            Member for {membershipDuration} <br />
+            Reputation: {user.reputation} <br />
+            <strong style={{ fontSize: '1.2em' }}>Questions User Asked</strong> <br />
+            {this.state.Names && this.state.Names.length > 0 ? (
+              <ul style={{ listStyle: 'none', padding: 0 }}>
+                {this.state.Names.map((question, index) => (
+                  <li key={index}>
+                    {/* Make the title clickable */}
+                    <span
+                      style={{ display: 'block', cursor: 'pointer', color: 'blue' }}
+                      onClick={() => onChangeQuestion(question)}
+                    >
+                      {question.title}
+                    </span>
+                    <div style={{ marginBottom: '10px' }}>
+                      <button onClick={() => onDeleteQuestion(question)}>Delete</button>
+                      <button onClick={() => onChangeQuestion(question)}>Modify</button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>You have no Questions</p>
+            )}
+          </p>
+          <p>
+            <strong style={{ fontSize: '1.5em', cursor: 'pointer', color: 'Red', marginBottom: "20px" }} onClick={() => onUserAnswers(this.state.Answers)}>
+              Questions User answered Page
+            </strong>
+            <br />
+            <strong style={{ fontSize: '1.5em', marginTop: '20px', cursor: 'pointer' }} onClick={() => onTagsPage(this.state.tags)}>
+              Tags User Created
+            </strong>
+            <br />
+          </p>
+        </div>
     <div className='Users'>
       <h3>Users:</h3>
       {this.renderusers()}
