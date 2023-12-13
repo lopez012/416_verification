@@ -23,8 +23,8 @@ router.route('/:tagname').get((req, res) => {
 });
 router.route('/add').post((req,res)=>{
     const name = req.body.name;
-
-    const newTag = new Tag({name});
+    const createdBy = req.body.createdBy;
+    const newTag = new Tag({name, createdBy});
 
     newTag.save()
         .then(()=> res.json('Tag Added!'))

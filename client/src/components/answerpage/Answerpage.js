@@ -26,6 +26,7 @@ export default class AnswerPage extends Component {
         const response = await axios.get(`http://localhost:8000/questions/${this.props.question._id}`); 
         const question = response.data;
         this.setState({ question });
+        console.log("tns");
         //let count = questions.length;
         //this.setState({question_count: count})
         //console.log(count);
@@ -50,8 +51,9 @@ export default class AnswerPage extends Component {
         const vote = await axios.post(`http://localhost:8000/questions/${qid}/${userId}/upvote`)
         const voteMessage = vote.data.message;
         const response = await axios.post(`http://localhost:8000/users/${askedBy}/${voteMessage}`);
-        console.log(response.data.message);
+        
       } 
+
       catch (error) {
         console.error('Error:', error);
       }}
@@ -72,11 +74,10 @@ export default class AnswerPage extends Component {
       if (userReputation >= 50){
         if(askedBy !== user._id){
       try {
-        console.log("ivan");
         const vote = await axios.post(`http://localhost:8000/questions/${qid}/${user._id}/downvote`);
         const voteMessage = vote.data.message;
         const response = await axios.post(`http://localhost:8000/users/${askedBy}/${voteMessage}`);
-        
+
         console.log(response);
       } catch (error) {
         console.error('Error:', error);
@@ -158,6 +159,7 @@ export default class AnswerPage extends Component {
     onUpVote = {this.handleUpVote}
     onDownVote = {this.handleDownvote}
     user ={this.props.user}
+    refresh = {this.refreshQuestionData}
     />
     <QuestionInfo 
     question={this.state.question}

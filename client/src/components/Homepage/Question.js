@@ -25,7 +25,7 @@ class Question extends Component {
     const { question, onViewQuestion, tagName, onUpVote, onDownVote  } = this.props;
     const { askedByUsername } = this.state;
     const formattedDate = FormatDate(question.askDate);
-
+    
     return (
       <div className="question">
         <div className="question_container">

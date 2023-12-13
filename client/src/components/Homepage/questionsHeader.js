@@ -2,10 +2,13 @@ import React from 'react';
 
 
 function QuestionsHeader(props) {
+  const headerText = props.ansdel
+  ? "Questions that you have answered"
+  : "All Questions";
   return (
     <td id="questions_header">
       <span style={{ paddingLeft: '10px', fontWeight: 'bold', fontSize: 'x-large' }}>
-        All Questions
+        {headerText}
       </span>
       <div style={{ paddingLeft: '10px', fontSize: 'large'}}>
         {props.totalQuestions} Questions

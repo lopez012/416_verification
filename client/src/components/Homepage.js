@@ -79,6 +79,7 @@ class Homepage extends Component {
   }
  
   handlehomepage(event){
+    this.fetchQuestions();
     this.setState({
       displayQuestionForm:false,
       displayQuestionHeader:true,
@@ -394,21 +395,28 @@ class Homepage extends Component {
     });
   }
   handleUserAnswersPage = async (questions1) => {
-    
-    this.setState({questions: questions1});
-    console.log("hello");
+    console.log("zhi");
+    console.log(questions1);
+    if(questions1.length === 0) {
+      alert("You answered no questions.");
+    }
+    else {
+      const filtered = this.state.questions.filter(question => questions1.includes(question._id));
+      this.setState({questions: filtered});
+      console.log("hello");
+      this.setState({
+        displayQuestionHeader: true,
+        displayquestions:true,
+        tagQuestions:[],
+        page_controls:true,
+        current_page:0,
+        question_per_page:5,
+        showUserProfile: false,
+        answerDelete : true,
+      });
+    }
 
-    this.setState({
-      
-      displayQuestionHeader: true,
-      displayquestions:true,
-      tagQuestions:[],
-      page_controls:true,
-      current_page:0,
-      question_per_page:5,
-      showUserProfile: false,
-      answerDelete : false,
-    });
+
   }
   handleSearch = async (searchString) => {
     if(searchString.trim() === "") {
@@ -460,7 +468,8 @@ class Homepage extends Component {
       displaySearchHeader : true,
       searchResults,
       displayQuestionForm: false,
-      initSearch : true
+      initSearch : true,
+      ansDelete : false,
     });
   };
 
@@ -490,7 +499,7 @@ class Homepage extends Component {
           key={question.qid}
           question={question}
           onViewQuestion={(qid) => this.handleViewQuestion(qid)}
-          tagName={this.model.getTagsOfQuestion(question)}
+          tagName={this.getTagsOfQuestion(question)}
           onUpVote={this.handleUpVote}
           onDownVote={this.handleDownvote}
         />
@@ -617,6 +626,7 @@ class Homepage extends Component {
         } else {
           const newTagResponse = await axios.post('http://localhost:8000/tags/add', { //add to tag collection
             name: tag,
+            createdBy: user._id
           });
           const res = await axios.get(`http://localhost:8000/tags/${encodeURIComponent(tag)}`);
           const t = res.data;
@@ -684,6 +694,7 @@ class Homepage extends Component {
               sortbyactive ={this.handlesortedbyactive}
               sortbyunanswered ={this.handlesortedbyunanswered} 
               user = {this.props.user}
+              ansdel = {this.state.answerDelete}
             />
           )}
         <MenuBar className = "menubar" showhomePage = {this.handlehomepage} showtagPage = {this.handletagpage} onQuestions = {this.state.displayquestions} ontagpage = {this.state.tagpage}/>

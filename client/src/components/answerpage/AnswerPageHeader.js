@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 export default class AnswerPageHeader extends Component {
 
   render() {
-    const { question, user, onAskQuestion, onUpVote, onDownVote } = this.props;
+    const { question, user, onAskQuestion, onUpVote, onDownVote, refresh } = this.props;
 
     return (
       <div className='answer_page_header'>
@@ -22,7 +22,10 @@ export default class AnswerPageHeader extends Component {
         {/* Upvote button */}
         {user && (
           <button
-            onClick={() => onUpVote(question._id)}
+          onClick={() => {
+            onUpVote(question._id);
+            refresh();
+          }}
             style={{ display: 'block', verticalAlign: 'middle', marginLeft: '10px' }}
           >
             ▲

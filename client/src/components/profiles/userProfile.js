@@ -26,10 +26,8 @@ class UserProfile extends Component {
             const response = await axios.get(`http://localhost:8000/questions/${user._id}/names`);
             this.setState({ Names: response.data.questions });
             const response01 = await axios.get(`http://localhost:8000/questions/${user._id}/getanswers`);
-            
-            this.setState({Answers: response01.data.questions});
-            
-
+            const b = response01.data.questions.map(question => question._id);
+            this.setState({Answers: b});
             this.getusers();
           } catch (error) {
             console.error('Error fetching titles', error);
@@ -95,7 +93,7 @@ class UserProfile extends Component {
   render() {
     const { user, onChangeQuestion, onDeleteQuestion, onUserAnswers, onTagsPage } = this.props;
     const membershipDuration = user ? memSince(user.member_since) : '--';
-    console.log(this.state.Names);
+    
     if(user.role==="admin"){  //ADMIN PROFILE PAGE
       return (
       <>
@@ -164,11 +162,11 @@ class UserProfile extends Component {
             )}
           </p>
           <p>
-            <strong style={{ fontSize: '1.2em', cursor: 'pointer' }} onClick={() => onUserAnswers(this.state.Answers)}>
+            <strong style={{ fontSize: '1.5em', cursor: 'pointer', color: 'Red', marginBottom: "20px" }} onClick={() => onUserAnswers(this.state.Answers)}>
               Questions User answered Page
             </strong>
             <br />
-            <strong style={{ fontSize: '1.2em', marginTop: '20px', cursor: 'pointer' }} onClick={() => onTagsPage(this.state.Tags)}>
+            <strong style={{ fontSize: '1.5em', marginTop: '20px', cursor: 'pointer' }} onClick={() => onTagsPage(this.state.Tags)}>
               Tags User Created
             </strong>
             <br />

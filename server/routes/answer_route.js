@@ -99,6 +99,31 @@ router.route('/:aid/:userId/upvote').post(async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+
+  router.route('/:aids/:change/change').post(async (req, res) => {
+    const { aids, change } = req.params;
+  
+    try {
+      // Find the answer by ObjectId
+      const answer = await Answer.findById(aids);
+  
+      if (!answer) {
+        return res.status(404).json({ error: 'Answer not found' });
+      }
+  
+      // Update the text content of the answer
+      answer.text = change;
+  
+      // Save the updated answer
+      await answer.save();
+  
+      res.json({ message: 'Answer updated successfully', updatedAnswer: answer });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
   //delete answers and extract comment arrays
   router.route('/:aids/delete').post(async (req, res) => {
     try {

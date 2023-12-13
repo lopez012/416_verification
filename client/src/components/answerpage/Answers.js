@@ -71,21 +71,43 @@ export default class Answers extends Component {
     }));
   };
 
+  editAnswer = async(answer) => {
+    const userInput = window.prompt('What would you like to change answer into?');
+    const responsed = await axios.post(`http://localhost:8000/answers/${answer._id}/${userInput}/change`);
+    
+    alert("Answer Changed");
+  };
 
+ deleteAnswer = async(answer) => {
+  const responsed = await axios.post(`http://localhost:8000/answers/${answer._id}/delete`);
+  console.log(responsed.data)
+  const respon = await axios.post(`http://localhost:8000/comments/${responsed.data.commentArrays}/delete`);
+  alert("answer delete");
+};
 
   renderAnswers(answers) {
-    const { onUpVote, onDownVote } = this.props;
+    const { onUpVote, onDownVote, ansDeletion, user } = this.props;
 
     const sorted_answers = answers.sort((a, b) => {
       const A = new Date(a.ans_date_time);
       const B = new Date(b.ans_date_time);
-    return B - A;
+    return B - A; 
     });
     const start_ind = this.state.current_page * this.state.answers_per_page;
     const answers_on_page = sorted_answers.slice(start_ind, start_ind+this.state.answers_per_page);
-  
-    
-    
+    console.log(answers_on_page);
+    if(ansDeletion) {
+      answers_on_page.sort((a) => {
+        if (a.ans_by._id !== user._id) {
+          console.log("ff");
+          return 1; // Move answer with ans_by equal to user._id to the front
+        } else {
+          console.log("fff");
+
+          return 0; // Keep the original order for other answers
+        }
+      });
+    }    
     const answer_comp = answers_on_page.map(answer => (
      <Answer 
      key={answer._id}
@@ -96,6 +118,8 @@ export default class Answers extends Component {
      user ={this.props.user}
      comment_submitted = {this.comment_submitted}
      answerDeletion = {this.props.ansDeletion}
+     handleDeleteAnswer = {this.deleteAnswer}
+     handleEditAnswer = {this.editAnswer}
 
      />
     ));

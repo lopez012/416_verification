@@ -6,7 +6,7 @@ function QuestionForm({ onQuestionSubmit,user,passedQuestion,change,onDeleteQues
   const [formData, setFormData] = useState({
     questionTitle: change? passedQuestion.title : '',
     questionText: change? passedQuestion.text : '',
-    tags: change? ts: '0',
+    tags: change? ts: '',
     summary: change? passedQuestion.summary : '',
   });
 

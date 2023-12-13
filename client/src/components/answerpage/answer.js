@@ -142,7 +142,7 @@ handleSubmitForm(event){
 
 
   render() {
-    const { onUpVote, onDownVote , answer , hyperLinks } = this.props;
+    const { onUpVote, onDownVote , answer , hyperLinks, user,answerDeletion, handleDeleteAnswer , handleEditAnswer } = this.props;
     
     return (
         <div className='answer_div'>
@@ -173,7 +173,13 @@ handleSubmitForm(event){
           answered {FormatDate(answer.ans_date_time)}
         </div>
         {this.render_comments_for_answer(this.props.answer.comments)}
-
+      {/* Check if user is the author and answerDeletion is true */}
+      {user && answerDeletion && answer.ans_by._id === user._id && (
+        <div>
+          <button className='editor-buttons'onClick={() => handleEditAnswer(answer)}>Edit</button>
+          <button className= 'Delete-button' onClick={() => handleDeleteAnswer(answer)}>Delete</button>
+        </div>
+      )}
         {this.props.user &&
         (<button className='comment-button' onClick={this.handleCommentClick}>Add Comment</button>
         )}
