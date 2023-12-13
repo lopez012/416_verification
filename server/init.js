@@ -40,7 +40,7 @@ const saltRounds = 10;
 
 
 function tagCreate(name) {
-  let tag = new Tag({ name: name });
+  let tag = new Tag({ name: name, createdBy : "Default" });
   return tag.save();
 }
 function commentCreate(text, commented_by){
