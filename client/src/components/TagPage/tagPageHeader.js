@@ -20,11 +20,15 @@ export default class TagPageHeader extends Component {
   }
 
   render() {
+    
+    const headerText = this.props.tagDel ? "Tags you created" : "All Tags";
+    const numTags = this.props.tagDel ? this.props.passTag.length : this.state.num_of_tags;
+
     return (
         <div className = 'TagsPage'>
         <div className = 'TagsPageHeader'>
-          <div className = 'numoftags'><h2>{this.state.num_of_tags} Tags</h2></div>
-          <div className = 'alltags'><h1>All Tags</h1></div>
+          <div className = 'numoftags'><h2>{numTags} Tags</h2></div>
+          <div className = 'alltags'><h1>{headerText}</h1></div>
           {this.props.user &&(<button className = "tagsq" id="addqtagspage" onClick={this.props.onAskQuestion}>Add Question</button>)}
         </div>
       </div>

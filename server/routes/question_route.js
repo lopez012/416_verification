@@ -49,6 +49,31 @@ router.route('/:id').get(async (req, res) => {
   }
 });
 
+router.route('/:tid/uniqueTags').get(async (req, res) => {
+  const { tid } = req.params;
+
+  try {
+    const uniqueAskers = [];
+
+    // Find questions where tid is in the tags array
+    const questions = await Question.find({ tags: tid });
+
+    // Iterate through questions
+    questions.forEach(question => {
+      // Check if the asker is not already in the array
+      if (!uniqueAskers.includes(question.askedBy)) {
+        uniqueAskers.push(question.askedBy);
+      }
+    });
+
+    res.json({ uniqueAskers });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 router.route('/modify').post(async (req, res) => {
   try {
     const { id, title, text, summary } = req.body;

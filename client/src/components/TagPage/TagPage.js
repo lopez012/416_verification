@@ -11,12 +11,16 @@ export default class TagPage extends Component {
     super(props)
 
   }
- 
   render() {
+
+
+
     return (
       <div className='TagsPage'>
         <div className= 'TagsContainer'>
-        <TagsContainer onTagclick ={this.props.onTagclick} />
+        <TagsContainer onTagclick ={this.props.onTagclick}
+        tagDel = {this.props.tagDel}
+        passTag = {this.props.passTag} />
         </div>
      </div>
     )

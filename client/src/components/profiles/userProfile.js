@@ -11,7 +11,8 @@ class UserProfile extends Component {
         this.state = {
           Names: [],
           Answers:[],
-          users:[]
+          users:[],
+          tags: [],
         };
 
 
@@ -28,6 +29,10 @@ class UserProfile extends Component {
             const response01 = await axios.get(`http://localhost:8000/questions/${user._id}/getanswers`);
             const b = response01.data.questions.map(question => question._id);
             this.setState({Answers: b});
+            const response02 = await axios.get(`http://localhost:8000/tags/${user._id}/getCreation`);
+          
+            this.setState({tags : response02.data.tags});
+            console.log(this.state.tags);
             this.getusers();
           } catch (error) {
             console.error('Error fetching titles', error);
@@ -166,7 +171,7 @@ class UserProfile extends Component {
               Questions User answered Page
             </strong>
             <br />
-            <strong style={{ fontSize: '1.5em', marginTop: '20px', cursor: 'pointer' }} onClick={() => onTagsPage(this.state.Tags)}>
+            <strong style={{ fontSize: '1.5em', marginTop: '20px', cursor: 'pointer' }} onClick={() => onTagsPage(this.state.tags)}>
               Tags User Created
             </strong>
             <br />

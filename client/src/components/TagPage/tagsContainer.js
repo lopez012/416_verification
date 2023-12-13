@@ -17,10 +17,18 @@ export default class tagsContainer extends Component {
     componentDidMount(){
         axios.get('http://localhost:8000/tags')
             .then(res =>{
-                const tagswithQcount = res.data.map(tag=>({
+                let tagswithQcount = res.data.map(tag=>({
                   ...tag, count:0
                 }));
+                console.log(this.props.passTag);
+                if (this.props.tagDel) {
+                  tagswithQcount = this.props.passTag.map(tag => ({
+                    ...tag,
+                    count: 0
+                  }));
+                }
                 this.setState({ tags: tagswithQcount});
+                console.log(tagswithQcount);
 
                 tagswithQcount.forEach((tag,index)=>{
                   axios.get(`http://localhost:8000/tags/tag/count/${tag._id}`)
@@ -73,12 +81,14 @@ export default class tagsContainer extends Component {
          tagid={tag._id}
           onTagclick ={this.handleselectedtag} 
           numofq ={tag.count} 
+          tagDel = {this.props.tagDel}
           /> 
       ));
 
     }
 
   render() {
+
     return (
       <div className= 'TagsContainer'>
         {this.rendertags()}

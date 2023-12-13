@@ -41,6 +41,8 @@ class Homepage extends Component {
       questionToPass: null,
       tagString : null,
       answerDelete : false,
+      tagDelete : false,
+      tagsToPass : null,
     };
     this.model = new Model();
     this.handlehomepage = this.handlehomepage.bind(this);
@@ -94,6 +96,9 @@ class Homepage extends Component {
       showUserProfile:false,
       changeForm: false,
       answerDelete:false,
+      tagDelete : false,
+
+      
       
     })
 
@@ -260,7 +265,7 @@ class Homepage extends Component {
       changeForm: false,
       showAnswer: false,
       answerDelete : false,
-
+      tagDelete : false,
 
     });
   };
@@ -326,6 +331,7 @@ class Homepage extends Component {
       page_controls:false,
       showUserProfile:false,
       answerDelete : false,
+      tagDelete : false,
 
     }));
   };
@@ -347,6 +353,7 @@ class Homepage extends Component {
           page_controls:false,
           showUserProfile: false,
           changeForm: false,
+          tagDelete : false,
         });
       } catch (error) {
         console.error('Error updating view count:', error);
@@ -364,6 +371,7 @@ class Homepage extends Component {
       initSearch : false,
       page_controls:true,
       answerDelete : false,
+      tagDelete : false,
 
     });
   }
@@ -413,9 +421,24 @@ class Homepage extends Component {
         question_per_page:5,
         showUserProfile: false,
         answerDelete : true,
+        tagDelete : false,
       });
     }
+  }
 
+  handleUserTagsPage = async (tags) => {
+    console.log("jell");
+    if(tags.length === 0) {
+      alert("You have created no tags");
+    }
+    this.setState({
+      tagpage:true,
+      tagQuestions:[],
+      tagDelete : true,
+      showUserProfile: false,
+      tagsToPass : tags,
+    });
+    
 
   }
   handleSearch = async (searchString) => {
@@ -470,6 +493,7 @@ class Homepage extends Component {
       displayQuestionForm: false,
       initSearch : true,
       ansDelete : false,
+      tagDelete : false,
     });
   };
 
@@ -742,8 +766,14 @@ class Homepage extends Component {
           }
           {this.state.tagpage && (
             <>
-            <TagPageHeader onAskQuestion={this.toggleQuestionForm} user={this.props.user}/>
-            <TagPage onTagclick= {this.handletagclick}  />
+            <TagPageHeader onAskQuestion={this.toggleQuestionForm}
+             user={this.props.user} 
+             tagDel = {this.state.tagDelete}
+             passTag = {this.state.tagsToPass}/>
+            <TagPage onTagclick= {this.handletagclick} 
+            tagDel = {this.state.tagDelete}
+            passTag = {this.state.tagsToPass}
+            />
             </>
           )}
         {this.state.page_controls && this.state.questions.length>5&&(

@@ -30,6 +30,64 @@ router.route('/add').post((req,res)=>{
         .then(()=> res.json('Tag Added!'))
         .catch(err => res.status(400).json('error: '+ err));
 });
+
+router.get('/:uid/getCreation', async (req, res) => {
+  const { uid } = req.params;
+
+  try {
+    // Find tags with createdBy field matching uid
+    const tags = await Tag.find({ createdBy: uid });
+
+    res.json({ tags });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+router.delete('/:tid/delete', async (req, res) => {
+  try {
+    const tid = req.params.tid;
+
+    // Find the tag by ID and remove it
+    const deletedTag = await Tag.findByIdAndDelete(tid);
+    console.log(deletedTag);
+    if (!deletedTag) {
+      return res.status(404).json({ message: 'Tag not found' });
+    }
+
+    res.json({ message: 'Tag deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+})
+
+router.route('/:tid/:change/change').post(async (req, res) => {
+  const { tid, change } = req.params;
+
+  try {
+    // Find the tag by ObjectId
+    const tag = await Tag.findById(tid);
+
+    if (!tag) {
+      return res.status(404).json({ error: 'Tag not found' });
+    }
+
+    // Update the name of the tag
+    tag.name = change;
+
+    // Save the updated tag
+    await tag.save();
+
+    res.json({ message: 'Tag updated successfully', updatedTag: tag });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 router.route('/count').get(async (req, res) => {
   try {
     const tags = await Tag.find();
