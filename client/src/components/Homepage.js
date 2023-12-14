@@ -523,7 +523,7 @@ class Homepage extends Component {
           key={question.qid}
           question={question}
           onViewQuestion={(qid) => this.handleViewQuestion(qid)}
-          tagName={this.getTagsOfQuestion(question)}
+          tagName={question.tags}
           onUpVote={this.handleUpVote}
           onDownVote={this.handleDownvote}
         />
