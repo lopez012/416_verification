@@ -39,8 +39,8 @@ const saltRounds = 10;
     
 
 
-function tagCreate(name) {
-  let tag = new Tag({ name: name, createdBy : "Default" });
+function tagCreate(name, createdBy) {
+  let tag = new Tag({ name: name, createdBy : createdBy });
   return tag.save();
 }
 function commentCreate(text, commented_by){
@@ -125,10 +125,10 @@ const populate = async () => {
 
 
   //tags
-  let t1 = await tagCreate('react');
-  let t2 = await tagCreate('javascript');
-  let t3 = await tagCreate('android-studio');
-  let t4 = await tagCreate('shared-preferences');
+  let t1 = await tagCreate('react',u1);
+  let t2 = await tagCreate('javascript',u2);
+  let t3 = await tagCreate('android-studio',u3);
+  let t4 = await tagCreate('shared-preferences',u2);
 
   //comments
   let c1 = await commentCreate('that is a very interesting point that you bring up',u1);
